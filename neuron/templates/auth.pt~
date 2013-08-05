@@ -1,0 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+<title> U are here </title>
+</head>
+<body>
+<h1 align="center"> Welcome ${username} </h1>
+<h1 align="center"> Your password is ${password} </h1>
+<h1 align="center"> Your state is ${state} </h1>
+<h1 align="center"> Your session is ${session} </h1>
+<a href='index/'>click here</a>
+</body>
+</html>

@@ -1,0 +1,122 @@
+from pyramid.config import Configurator
+from pyramid.events import subscriber
+from pyramid.events import NewRequest
+import json
+import logging
+#from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from pyramid_beaker import session_factory_from_settings
+from pyramid.view import view_config
+import pymongo
+#from login.flash import Flash
+from login.resources import Root
+from login.views import *
+from velruse import login_url
+def main(global_config, **settings):
+    """ This function returns a WSGI application.
+    """
+     # velruse requires session support
+    #session_factory = UnencryptedCookieSessionFactoryConfig(
+     #   settings['session.secret'],
+    #)
+    providers = settings.get('login_providers', '')
+    providers = filter(None, [p.strip()
+                              for line in providers.splitlines()
+                              for p in line.split(', ')])
+    settings['login_providers'] = providers
+    #config = Configurator(settings=settings, root_factory=Root)
+    session_factory = session_factory_from_settings(settings)   
+
+    config = Configurator(
+        settings=settings, 
+        session_factory=session_factory
+    )
+     #config = Configurator(settings=settings)
+
+    # Configure Beaker sessions and caching.
+    config.include("pyramid_beaker")
+
+  #  config.add_view('login.views.my_view',
+  #                  context='login:resources.Root',
+  #                  renderer='login:templates/mytemplate.pt')
+    #config.set_session_factory(session_factory)
+    #config.add_static_view('static', 'static', cache_max_age=3600)
+    if 'facebook' in providers:
+        config.include('velruse.providers.facebook')
+        config.add_facebook_login_from_settings(prefix='facebook.')
+
+    if 'github' in providers:
+        config.include('velruse.providers.github')
+        config.add_github_login_from_settings(prefix='github.')
+
+    if 'twitter' in providers:
+        config.include('velruse.providers.twitter')
+        config.add_twitter_login_from_settings(prefix='twitter.')
+
+    if 'live' in providers:
+        config.include('velruse.providers.live')
+        config.add_live_login_from_settings(prefix='live.')
+
+    if 'bitbucket' in providers:
+        config.include('velruse.providers.bitbucket')
+        config.add_bitbucket_login_from_settings(prefix='bitbucket.')
+
+    if 'google' in providers:
+        config.include('velruse.providers.google')
+        config.add_google_login(
+            realm=settings['google.realm'],
+            consumer_key=settings['google.consumer_key'],
+            consumer_secret=settings['google.consumer_secret'],
+        )
+
+    if 'yahoo' in providers:
+        config.include('velruse.providers.yahoo')
+        config.add_yahoo_login(
+            realm=settings['yahoo.realm'],
+            consumer_key=settings['yahoo.consumer_key'],
+            consumer_secret=settings['yahoo.consumer_secret'],
+        )
+    config.add_static_view('static', 'neuron:static')
+    config.add_route('home','/') 
+    config.add_view(index, route_name='home',
+                   renderer="neuron:templates/index.pt")
+    config.add_route('welcome','/index')
+    config.add_view(session_check,route_name='welcome',renderer="neuron:templates/welcome.pt")
+    config.add_route('auth','/auth')
+    config.add_view(authenticate, route_name='auth',renderer="neuron:templates/auth.pt")
+    
+    config.add_route('sign-up','/signup')
+    config.add_view(signup, route_name="sign-up", renderer="neuron:templates/sign_up.pt")
+
+    config.add_route('register-user','/register')
+    config.add_view(register_user, route_name="register-user", renderer="neuron:templates/register.pt")
+ 
+    config.add_route('fb-sign-in','/fb_signin')
+    config.add_view(login_view, route_name="fb-sign-in", renderer="neuron:templates/login.mako")
+    
+    config.add_route('register-profile-details','/register_profile_details')
+    config.add_view(register_profiledetails,route_name="register-profile-details",renderer="neuron:templates/uploadpic.pt")
+   
+    config.add_route('process-picture','/process-pic')
+    config.add_view(process_profile_picture,route_name="process-picture",renderer="neuron:templates/auth.pt")
+
+    config.add_view('login.views.login_complete_view',context='velruse.AuthenticationComplete',renderer='neuron:templates/result.mako')
+    
+
+  # MongoDB
+    def add_mongo_db(event):
+        settings = event.request.registry.settings
+        url = settings['mongodb.url']
+        db_name = settings['mongodb.db_name']
+        db = settings['mongodb_conn'][db_name]
+        event.request.db = db
+    db_uri = settings['mongodb.url']
+    MongoDB = pymongo.Connection
+    #if 'pyramid_debugtoolbar' in set(settings.values()):
+      #  class MongoDB(pymongo.Connection):
+       #     def __html__(self):
+         #       return 'MongoDB: <b>{}></b>'.format(self)
+    conn = MongoDB(db_uri)
+    config.registry.settings['mongodb_conn'] = conn
+    config.add_subscriber(add_mongo_db, NewRequest)
+    config.scan('neuron')
+    return config.make_wsgi_app()

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+<title>
+login 
+</title>
+ <link rel="stylesheet" href="${request.static_url('login:static/css/login.css')}" type="text/css" media="screen" charset="utf-8" />
+</head>
+<body>
+<h1 align="center">
+Welcome to ${page} page
+</h1>
+<h2 align="center">
+${state}
+</h2>
+<div class="one">
+<form method="post" action="/auth">
+<br />
+<br />
+username: <input type="text" name="uname">
+<br />
+<br />
+password: <input type="password" name="pword">
+<br />
+<br />
+<input type="submit" name="submit" value="submit"><br/><br/>
+<a href="/signup">sign up </a><br/> <br/>
+<a href="/fb_signin"> Sign in with Facebook </a>
+<br />
+<br />
+</form>
+</div>
+</body>
+</html>
+
