@@ -8,8 +8,8 @@ from pyramid_beaker import session_factory_from_settings
 from pyramid.view import view_config
 import pymongo
 #from login.flash import Flash
-from login.resources import Root
-from login.views import *
+from neuron.resources import Root
+from neuron.views import *
 from velruse import login_url
 def main(global_config, **settings):
     """ This function returns a WSGI application.
@@ -39,7 +39,7 @@ def main(global_config, **settings):
   #                  context='login:resources.Root',
   #                  renderer='login:templates/mytemplate.pt')
     #config.set_session_factory(session_factory)
-    #config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_static_view('static', 'static', cache_max_age=3600)
     if 'facebook' in providers:
         config.include('velruse.providers.facebook')
         config.add_facebook_login_from_settings(prefix='facebook.')
@@ -75,12 +75,22 @@ def main(global_config, **settings):
             consumer_key=settings['yahoo.consumer_key'],
             consumer_secret=settings['yahoo.consumer_secret'],
         )
-    config.add_static_view('static', 'neuron:static')
+    #config.add_static_view('static', 'neuron:static')
     config.add_route('home','/') 
     config.add_view(index, route_name='home',
                    renderer="neuron:templates/index.pt")
     config.add_route('welcome','/index')
     config.add_view(session_check,route_name='welcome',renderer="neuron:templates/welcome.pt")
+    
+    config.add_route('resume_v','/resume_view')
+    config.add_view(resume_read,route_name='resume_v',renderer="neuron:templates/resume_view.pt")
+    
+    config.add_route('resume_e','/resume_edit')
+    config.add_view(resume_read,route_name='resume_e',renderer="neuron:templates/resume_edit.pt")
+    
+    config.add_route('resume_en','/resume_entered')
+    config.add_view(resume_write,route_name='resume_en',renderer="neuron:templates/resume_view.pt")
+    
     config.add_route('auth','/auth')
     config.add_view(authenticate, route_name='auth',renderer="neuron:templates/auth.pt")
     

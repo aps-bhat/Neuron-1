@@ -77,6 +77,29 @@ def process_profile_picture(request):
     ppobj.EnterFirstProfPic(username)
     return { 'username':username, 'password':'password', 'state':'saved','session':session['name']}
 
+def resume_read(request):
+    setting=request.registry.settings
+    session=request.session
+    uname=session['name']
+    collection=request.db['resume']
+    Resume=collection.find_one({'username':uname})
+    #check_address=Resume.get('address',None)
+    try:
+        Address=Resume['address']
+        return {'address':Address,'username':uname}
+    except TypeError:
+        return {'address':'Enter your address','username':uname}
+        
+def resume_write(request):
+    setting=request.registry.settings
+    session=request.session
+    uname=session['name']
+    collection=request.db['resume']
+    Address=request.params["address"]
+    collection.update({'username':uname},{"$set":{'address':Address}},upsert=True)
+    return {'address':Address,'username':uname}
+    
+
 def login_complete_view(request):
     context = request.context
     result = {
