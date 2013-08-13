@@ -95,7 +95,7 @@ def resume_write(request):
     session=request.session
     uname=session['name']
     collection=request.db['resume']
-    Address=request.params["address"]
+    Address=request.params["edit_address"]
     collection.update({'username':uname},{"$set":{'address':Address}},upsert=True)
     return {'address':Address,'username':uname}
     
