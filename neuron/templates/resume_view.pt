@@ -4,32 +4,84 @@
 <title>
 Resume
 </title>
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script> 
 <script type="text/javascript">
+$(function() {
+var addDiv = $('#addschools');
+alert("hello");
+var i = $('#addschools p').size() + 1;
+alert(i); 
+$('#addNewSchool').live('click', function() {
+$('<p><h3 align="center"> SCHOOL - '+i+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"><br/\><br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"><br/\><br/\>Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"><br/\><br/\>Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"><br/\><br/\>Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"><br/\><br/\></p>').appendTo(addDiv);
+i++;	 
+alert("finished append");
+	return false;
+	});
+
+	$('#remNew').live('click', function() {
+	if( i > 2 ) {
+	$(this).parents('p').remove();
+	i--;
+	}
+	return false;
+	});
+	});
+function SetReadOnly()
+{
+document.getElementById("uname").readOnly=true;
+document.getElementById("address").readOnly=true;
+return true;
+}
 function DisplayTextBox(){
- var element=document.getElementById('edit_address');
-   element.style.display='block';
+ document.getElementById("address").readOnly=false;
 }
 </script> 
  <link rel="stylesheet" href="${request.static_url('neuron:static/css/login.css')}" type="text/css" media="screen" charset="utf-8" />
 </head>
-<body>
+<body  onload="SetReadOnly()">
 <div class="one">
-<form method="post" action="/resume_entered">
+<form method="post" name="school_form" id="school_form" action="/resume_entered">
 <br />
 <br />
-username: <input type="text" name="uname" value="${username}" readonly>
+
+username: <input type="text" name="uname" id="uname" value="${username}">
 <br />
 <br />
-Address: <input type="text" name="address" value="${address}" readonly>
+Address: <input type="text" name="address" id="address" value="${address}">
 <br />
 <br />
-<textarea rows="8" cols="40" name="edit_address" id="edit_address" style='display:none'></textarea>
 <!--<input type="text" name="edit_address" id="edit_address" style='display:none'>-->
+<h1 align="center"> SCHOOL FORM </h1>
+<h3 align="center"> SCHOOL - 1 </h3>
+<br/>
+<div id="addschools">
+<p>
+Name of High School: <input type="text" name="name_school_1" id="name_school_1">
+<br/>
+<br/>
+Date of Joining: <input type="text" name="doj_school_1" id="doj_school_1">
+<br/>
+<br/>
+Date of leaving: <input type="text" name="dol_school_1" id="dol_school_1">
+<br/>
+<br/>
+City: <input type="text" name="city_school_1" id="city_school_1">
+<br/>
+<br/>
+Marks Secured: <input type="text" name="ms_school_1" id="ms_school_1">
+<br/>
+<br/>
+Out of: <input type="text" name="outof_school_1" id="outof_school_1">
+<br/>
+<br/>
 <input type="button" onclick="DisplayTextBox()" value="edit">
-<input type="submit" value="Save me!!!">
+<!--<input type="submit" value="Save me!!!">-->
+<a href="#" id="addNewSchool">AddNewSchool</a>
 <!--<a href="/resume_entered">SAVE YOUR RESUME HERE!!!</a><br/> <br/>-->
 <br />
 <br />
+</p>
+</div>
 </form>
 </div>
 </body>
