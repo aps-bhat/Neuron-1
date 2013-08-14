@@ -8,13 +8,10 @@ Resume
 <script type="text/javascript">
 $(function() {
 var addDiv = $('#addschools');
-alert("hello");
 var i = $('#addschools p').size() + 1;
-alert(i); 
 $('#addNewSchool').live('click', function() {
-$('<p><h3 align="center"> SCHOOL - '+i+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"><br/\><br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"><br/\><br/\>Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"><br/\><br/\>Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"><br/\><br/\>Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"><br/\><br/\></p>').appendTo(addDiv);
-i++;	 
-alert("finished append");
+$('<p><h3 align="center"> SCHOOL - '+i+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"> <br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"> Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"> Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"> Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"></p>').appendTo(addDiv);
+i++;	document.school_form.p_tag.value=i-1; 
 	return false;
 	});
 
@@ -28,8 +25,10 @@ alert("finished append");
 	});
 function SetReadOnly()
 {
+var i = $('#addschools p').size();
 document.getElementById("uname").readOnly=true;
 document.getElementById("address").readOnly=true;
+document.school_form.p_tag.value=i;
 return true;
 }
 function DisplayTextBox(){
@@ -51,37 +50,29 @@ Address: <input type="text" name="address" id="address" value="${address}">
 <br />
 <br />
 <!--<input type="text" name="edit_address" id="edit_address" style='display:none'>-->
+<br/>
 <h1 align="center"> SCHOOL FORM </h1>
 <h3 align="center"> SCHOOL - 1 </h3>
-<br/>
+
 <div id="addschools">
 <p>
 Name of High School: <input type="text" name="name_school_1" id="name_school_1">
 <br/>
+Date of Joining: <input type="text" name="doj_school_1" id="doj_school_1"> Date of leaving: <input type="text" name="dol_school_1" id="dol_school_1">
 <br/>
-Date of Joining: <input type="text" name="doj_school_1" id="doj_school_1">
-<br/>
-<br/>
-Date of leaving: <input type="text" name="dol_school_1" id="dol_school_1">
-<br/>
-<br/>
-City: <input type="text" name="city_school_1" id="city_school_1">
-<br/>
-<br/>
-Marks Secured: <input type="text" name="ms_school_1" id="ms_school_1">
-<br/>
-<br/>
+City: <input type="text" name="city_school_1" id="city_school_1">  
+Marks Secured: <input type="text" name="ms_school_1" id="ms_school_1"> 
 Out of: <input type="text" name="outof_school_1" id="outof_school_1">
 <br/>
-<br/>
 <input type="button" onclick="DisplayTextBox()" value="edit">
-<!--<input type="submit" value="Save me!!!">-->
+<input type="submit" value="Save me!!!">
 <a href="#" id="addNewSchool">AddNewSchool</a>
 <!--<a href="/resume_entered">SAVE YOUR RESUME HERE!!!</a><br/> <br/>-->
 <br />
 <br />
 </p>
 </div>
+<input type="text" name="p_tag" type="hidden">
 </form>
 </div>
 </body>

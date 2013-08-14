@@ -86,18 +86,73 @@ def resume_read(request):
     #check_address=Resume.get('address',None)
     try:
         Address=Resume['address']
-        return {'address':Address,'username':uname}
     except TypeError:
-        return {'address':'Enter your address','username':uname}
-        
+        Address='Enter your address'
+    schools=[]
+    name=[]
+    d_o_j=[]
+    d_o_l=[]
+    place=[]
+    m_s=[]
+    o_f=[]
+    no_of_p=0
+    try:
+        schools=Resume['school']
+    except TypeError:
+        schools=[]
+    i=0
+    for school in schools:
+        collection_school=request.db['school']
+        school_detail=collection_school.find_one({'sid':school})
+        name.append(school_detail['name'])
+        d_o_j.append(school_detail['date_of_joining'])
+        d_o_l.append(school_detail['date_of_leaving'])
+        place.append(school_detail['place'])
+        m_s.append(school_detail['marks_secured'])
+        o_f.append(school_detail['out_of'])
+        i=i+1
+        no_of_p=i;
+    return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f}
+    
 def resume_write(request):
     setting=request.registry.settings
     session=request.session
     uname=session['name']
-    collection=request.db['resume']
-    Address=request.params["edit_address"]
-    collection.update({'username':uname},{"$set":{'address':Address}},upsert=True)
-    return {'address':Address,'username':uname}
+    collection_resume=request.db['resume']
+    person=collection_resume.find_one({'username':uname})
+    schools=[]
+    name=[]
+    d_o_j=[]
+    d_o_l=[]
+    place=[]
+    m_s=[]
+    o_f=[]
+    try:
+        schools=person['school']
+    except TypeError:
+        schools=[]
+    no_of_p=request.params['p_tag']
+    #print no_of_p
+    Address=request.params["address"]
+    collection_school=request.db['school']
+    for i in range(0,int(no_of_p)):
+        school_count=collection_school.count()
+        if not school_count:
+            school_count=0
+        name.append(request.params['name_school_'+str(i)])
+        d_o_j.append(request.params['doj_school_'+str(i)])
+        d_o_l.append(request.params['dol_school_'+str(i)])
+        place.append(request.params['city_school_'+str(i)])
+        m_s.append(request.params['ms_school_'+str(i)])
+        o_f.append(request.params['outof_school_'+str(i)])
+        try: 
+            temp=schools[i]
+        except IndexError:
+            schools.append(school_count+1)
+        collection_school.update({'sid':schools[i]},{"$set":{'name':name[i],'date_of_joining':d_o_j[i],'date_of_leaving':d_o_l[i],'place':place[i],
+        'marks_secured':m_s[i],'out_of':o_f[i]}},upsert=True)
+    collection_resume.update({'username':uname},{"$set":{'address':Address,'school':schools}},upsert=True)
+    return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f}
     
 
 def login_complete_view(request):
