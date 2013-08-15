@@ -8,11 +8,15 @@ Resume
 <script type="text/javascript">
 $(function() {
 var addDiv = $('#addschools');
-var i = $('#addschools p').size();
+var i = $('#addschools p').size()/2;
+//var k= $('#addschools p').length;
+alert("value of i and k on entrance is "+i);
 $('#addNewSchool').live('click', function() {
 var j=i+1;
-$('<p><h3 align="center"> SCHOOL - '+j+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"> <br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"> Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"> Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"> Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"></p>').appendTo(addDiv);
-i++;	document.school_form.p_tag.value=i; 
+$('<p><h3 align="center"> SCHOOL - '+j+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"> <br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"> <br/\> Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"> <br/\>Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"> <br/\> Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"></p>').appendTo(addDiv);
+i++;	
+//alert("value of i is " + i);
+document.school_form.p_tag.value=i; 
 	return false;
 	});
 
@@ -68,16 +72,21 @@ ${count_school()}
         Name of High School: <input type="text" name="name_school_${i}" id="name_school_${i}" value="${name[i]}">
         <br/>
         Date of Joining: <input type="text" name="doj_school_${i}" id="doj_school_${i}" value="${d_o_j[i]}"> 
+        <br/>
         Date of leaving: <input type="text" name="dol_school_${i}" id="dol_school_${i}" value="${d_o_l[i]}">
         <br/>
         City: <input type="text" name="city_school_${i}" id="city_school_${i}" value="${place[i]}">  
-        Marks Secured: <input type="text" name="ms_school_${i}" id="ms_school_${i}" value="${m_s[i]}"> 
+        <br/>
+        Marks Secured: <input type="text" name="ms_school_${i}" id="ms_school_${i}" value="${m_s[i]}">
+        <br/> 
         Out of: <input type="text" name="outof_school_${i}" id="outof_school_${i}" value="${o_f[i]}">
         <br/>
         <br/>
         </p>
     % endfor
 </%def>
+
+</div>
 </body>
 </html>
 
