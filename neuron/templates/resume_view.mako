@@ -9,10 +9,11 @@ Resume
 $(function() {
 var addDiv = $('#addschools');
 var i = $('#addschools p').size()/2;
-alert("value of i and k on entrance is "+i);
+//alert("value of i and k on entrance is "+i);
 $('#addNewSchool').live('click', function() {
 var j=i+1;
-$('<p><h3 align="center"> SCHOOL - '+j+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"> <br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"> <br/\> Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"> <br/\>Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"> <br/\> Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"> <br/\><input type="button"  id="s_'+i+'"> <br/\></p>').appendTo(addDiv);
+$('<p><h3 align="center"> SCHOOL - '+j+' </h3><br/\>Name of High School: <input type="text" name="name_school_'+i+'" id="name_school_'+i+'"> <br/\>Date of Joining: <input type="text" name="doj_school_'+i+'" id="doj_school_'+i+'"> <br/\> Date of leaving: <input type="text" name="dol_school_'+i+'" id="dol_school_'+i+'"><br/\>City: <input type="text" name="city_school_'+i+'" id="city_school_'+i+'"> <br/\>Marks Secured: <input type="text" name="ms_school_'+i+'" id="ms_school_'+i+'"> <br/\> Out of: <input type="text" name="outof_school_'+i+'" id="outof_school_'+i+'"> <br/\><input type="button"  value="Remove" id="s_'+i+'"> <br/\></p>').appendTo(addDiv);
+i++;
 //alert("value of i is " + i);
 document.school_form.p_tag.value=i; 
 	return false;

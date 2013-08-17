@@ -9,7 +9,8 @@ from pyramid.view import view_config
 import pymongo
 #from login.flash import Flash
 from neuron.resources import Root
-from neuron.views import *
+from neuron.views.login import *
+from neuron.views.resume import *
 from velruse import login_url
 def main(global_config, **settings):
     """ This function returns a WSGI application.
@@ -91,6 +92,9 @@ def main(global_config, **settings):
     config.add_route('resume_en','/resume_entered')
     config.add_view(resume_write,route_name='resume_en',renderer="neuron:templates/resume_view.mako")
     
+    config.add_route('delete_edu','/delete_education')
+    config.add_view(resume_delete,route_name='delete_edu',renderer="neuron:templates/resume_view.mako")  
+
     config.add_route('auth','/auth')
     config.add_view(authenticate, route_name='auth',renderer="neuron:templates/auth.pt")
     
