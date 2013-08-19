@@ -65,7 +65,7 @@ class Resume(object):
         place_coll.append(college_detail['place'])
         d_o_j_coll.append(college_detail['date_of_joining'])
         d_o_l_coll.append(college_detail['date_of_leaving'])
-        m_s_coll.append(college_detail['marks_secured'])
+        m_s_coll.append(college_detail['markssecured'])
         o_f_coll.append(college_detail['out_of'])
         i=i+1
     no_of_pc=i

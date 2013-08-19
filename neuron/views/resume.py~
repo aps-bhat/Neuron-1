@@ -34,7 +34,7 @@ def resume_write(request):
     except TypeError:
         schools=[]
     except KeyError:
-        schools=[]
+        schools[]
     no_of_p=request.params['p_tag']
     Address=request.params["address"]
     collection_school=request.db['school']
