@@ -56,14 +56,15 @@ function DisplayTextBox(){
 
 
 </script> 
- <link rel="stylesheet" href="${request.static_url('neuron:static/css/login.css')}" type="text/css" media="screen" charset="utf-8" />
+ <link rel="stylesheet" href="${request.static_url('neuron:static/css/resume.css')}" type="text/css" media="screen" charset="utf-8" />
 </head>
 <body  onload="SetReadOnly()">
-<div class="one">
+<div class="resume">
 <form method="post" name="school_form" id="school_form" action="/resume_entered">
 <br />
 <br />
-
+<h1 style="text-align:center;font-family: 'Script MT Bold','Trebuchet MS', Helvetica, sans-serif; font-size:35pt"> Resume</h1>
+<br/>
 username: <input type="text" name="uname" id="uname" value="${username}"> &nbsp &nbsp &nbsp
 Address: <input type="text" name="address" id="address" value="${address}">
 <br />

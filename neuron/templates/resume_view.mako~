@@ -56,14 +56,15 @@ function DisplayTextBox(){
 
 
 </script> 
- <link rel="stylesheet" href="${request.static_url('neuron:static/css/login.css')}" type="text/css" media="screen" charset="utf-8" />
+ <link rel="stylesheet" href="${request.static_url('neuron:static/css/resume.css')}" type="text/css" media="screen" charset="utf-8" />
 </head>
 <body  onload="SetReadOnly()">
-<div class="one">
+<div class="resume">
 <form method="post" name="school_form" id="school_form" action="/resume_entered">
 <br />
 <br />
-
+<div style="text-align:center;font-family: 'Script MT Bold','Trebuchet MS', Helvetica, sans-serif; font-size:35pt"> Resume</div>
+<br/>
 username: <input type="text" name="uname" id="uname" value="${username}"> &nbsp &nbsp &nbsp
 Address: <input type="text" name="address" id="address" value="${address}">
 <br />
@@ -74,9 +75,11 @@ Address: <input type="text" name="address" id="address" value="${address}">
 <a href="#" id="addNewSchool">AddNewSchool</a>
 <a href='#' id="addNewCollege">AddNewCollege</a>
 <div id="addschools">
+<h1 align="center"> SCHOOL FORM </h1>
 ${count_school()}
 </div>
 <div id="addcolleges">
+<h1 align="center"> COLLEGE FORM </h1>
 ${count_college()}
 </div>
 <input type="text" name="p_tag" hidden="true">
@@ -86,7 +89,7 @@ ${count_college()}
     % for i in range(0,int(no_of_p)):
         <p>
         <br/>
-        <h1 align="center"> SCHOOL FORM </h1>
+        
         <h3 align="center"> SCHOOL - ${i+1} </h3><br/>
         Name of High School: <input type="text" name="name_school_${i}" id="name_school_${i}" value="${name[i]}">
         <br/>
@@ -109,7 +112,7 @@ ${count_college()}
     % for i in range(0,int(no_of_pc)):
         <p>
         <br/>
-        <h1 align="center"> COLLEGE FORM </h1>
+        
         <h3 align="center"> COLLEGE - ${i+1} </h3><br/>
         Name of college: <input type="text" name="name_college_${i}" id="name_college_${i}" value="${name_coll[i]}">
         <br/>
