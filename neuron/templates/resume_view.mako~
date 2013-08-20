@@ -25,6 +25,13 @@ var j=coll_p+1;
 $('<p><h3 align="center"> COLLEGE - '+j+' </h3><br/\>Name of College: <input type="text" name="name_college_'+coll_p+'" id="name_college_'+coll_p+'"> <br/\>Degree: <input type="text" name="degree_college_'+coll_p+'" id="degree_college_'+coll_p+'"><br/\>Course: <input type="text" name="course_college_'+coll_p+'" id="course_college_'+coll_p+'"><br/\>Date of Joining: <input type="text" name="doj_college_'+coll_p+'" id="doj_college_'+coll_p+'"> <br/\> Date of leaving: <input type="text" name="dol_college_'+coll_p+'" id="dol_college_'+coll_p+'"><br/\>City: <input type="text" name="city_college_'+coll_p+'" id="city_college_'+coll_p+'"> <br/\>Marks Secured: <input type="text" name="ms_college_'+coll_p+'" id="ms_college_'+coll_p+'"> <br/\> Out of: <input type="text" name="outof_college_'+coll_p+'" id="outof_college_'+coll_p+'"> <br/\><input type="button"  value="Remove" id="cch_'+coll_p+'"> <br/\></p>').appendTo(addDiv1);
 coll_p++;
 document.school_form.no_of_pc.value=coll_p;return false;})
+var addDiv2 = $('#addprojects')
+var proj_p=$('#addprojects p').size()/2
+$('#addNewProject').live('click', function() {
+var j=proj_p+1;
+$('<p><br/\><h3 align="center"> PROJECT - '+j+' </h3><br/\>Project title: <input type="text" name="project_title_'+proj_p+'" id="project_title_'+proj_p+'"><br/\>Description: <input type="text" name="project_desc_'+proj_p+'" id="project_desc_'+proj_p+'"> <br/\>From: <input type="text" name="project_from_'+proj_p+'" id="project_from_'+proj_p+'"><br/\>To: <input type="text" name="project_to_'+proj_p+'" id="project_to_'+proj_p+'"><br/\>Members: <input type="text" name="project_mem_'+proj_p+'" id="project_mem_'+proj_p+'"><br/\>Publications: <input type="text" name="project_pub_'+proj_p+'" id="project_pub_'+proj_p+'"><br/\>Link: <input type="text" name="project_link_'+proj_p+'" id="project_link_'+proj_p+'"><br/\><input type="button"  id="pch'+proj_p+'" value="Remove"> <br/\></p>').appendTo(addDiv2);
+proj_p++;
+document.school_form.no_of_pro.value=proj_p;return false;})
    // this function displays the ID of the clicked button
         $(':button').click(function() {
   var buttonElementId = $(this).attr('id');
@@ -44,16 +51,17 @@ function SetReadOnly()
 {
 var i = $('#addschools p').size()/2;
 var j = $('#addcolleges p').size()/2;
+var k = $('#addprojects p').size()/2;
 document.getElementById("uname").readOnly=true;
 document.getElementById("address").readOnly=true;
 document.school_form.p_tag.value=i;
 document.school_form.no_of_pc.value=j;
+document.school_form.no_of_pro.value=k;
 return true;
 }
 function DisplayTextBox(){
  document.getElementById("address").readOnly=false;
 }
-
 
 </script> 
  <link rel="stylesheet" href="${request.static_url('neuron:static/css/resume.css')}" type="text/css" media="screen" charset="utf-8" />
@@ -63,7 +71,7 @@ function DisplayTextBox(){
 <form method="post" name="school_form" id="school_form" action="/resume_entered">
 <br />
 <br />
-<div style="text-align:center;font-family: 'Script MT Bold','Trebuchet MS', Helvetica, sans-serif; font-size:35pt"> Resume</div>
+<h1 style="text-align:center;font-family: 'Script MT Bold','Trebuchet MS', Helvetica, sans-serif; font-size:35pt"> Resume</h1>
 <br/>
 username: <input type="text" name="uname" id="uname" value="${username}"> &nbsp &nbsp &nbsp
 Address: <input type="text" name="address" id="address" value="${address}">
@@ -74,6 +82,7 @@ Address: <input type="text" name="address" id="address" value="${address}">
 <input type="submit" value="Save me!!!" >
 <a href="#" id="addNewSchool">AddNewSchool</a>
 <a href='#' id="addNewCollege">AddNewCollege</a>
+<a href='#' id="addNewProject">AddNewProject</a>
 <div id="addschools">
 <h1 align="center"> SCHOOL FORM </h1>
 ${count_school()}
@@ -82,9 +91,16 @@ ${count_school()}
 <h1 align="center"> COLLEGE FORM </h1>
 ${count_college()}
 </div>
+</div>
+<div id="addprojects">
+<h1 align="center"> PROJECT FORM </h1>
+${count_project()}
+</div>
 <input type="text" name="p_tag" hidden="true">
 <input type="text" name="no_of_pc" hidden="true">
+<input type="text" name="no_of_pro" hidden="true">
 </form>
+
 <%def name="count_school()">
     % for i in range(0,int(no_of_p)):
         <p>
@@ -108,6 +124,32 @@ ${count_college()}
         </p>
     % endfor
 </%def>
+<%def name="count_project()">
+    % for i in range(0,int(no_of_pro)):
+        <p>
+        <br/>
+        
+        <h3 align="center"> PROJECT - ${i+1} </h3><br/>
+        Project title: <input type="text" name="project_title_${i}" id="project_title_${i}" value="${project_title[i]}">
+        <br/>
+        Description: <input type="text" name="project_desc_${i}" id="project_desc_${i}" value="${project_desc[i]}"> 
+        <br/>
+        From: <input type="text" name="project_from_${i}" id="project_from_${i}" value="${project_from[i]}">
+        <br/>
+        To: <input type="text" name="project_to_${i}" id="project_to_${i}" value="${project_to[i]}">  
+        <br/>
+        Members: <input type="text" name="project_mem_${i}" id="project_mem_${i}" value="${project_mem[i]}">
+        <br/> 
+        Publications: <input type="text" name="project_pub_${i}" id="project_pub_${i}" value="${project_pub[i]}">
+        <br/>
+        Link: <input type="text" name="project_link_${i}" id="project_link_${i}" value="${project_link[i]}">
+        <br/>
+        <input type="button"  id="pch_${i}" value="Remove"> 
+        <br/>
+        </p>
+    % endfor
+</%def>
+
 <%def name="count_college()">
     % for i in range(0,int(no_of_pc)):
         <p>

@@ -69,6 +69,34 @@ class Resume(object):
         o_f_coll.append(college_detail['out_of'])
         i=i+1
     no_of_pc=i
+    projects=[]
+    pro_title=[]
+    pro_description=[]
+    pro_members=[]
+    pro_publications=[]
+    pro_from=[]
+    pro_to=[]
+    pro_links=[]
+    no_of_pro=0  #project_p_tag
+    try:
+        projects=res['project']
+    except KeyError:
+        projects=[]
+    except TypeError:
+        projects=[]
+    i=0
+    for project in projects:
+        project_detail=self.collection_project.find_one({'pid':project})
+        pro_title.append(project_detail['title'])
+        pro_description.append(project_detail['description'])
+        pro_members.append(project_detail['members'])
+        pro_publications.append(project_detail['publications'])
+        pro_from.append(project_detail['from'])
+        pro_to.append(project_detail['to'])
+        pro_links.append(project_detail['links'])
+        i=i+1
+    no_of_pro=i
     return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
-    'm_s_coll':m_s_coll,'o_f_coll':o_f_coll}
+    'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,
+    'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links}
