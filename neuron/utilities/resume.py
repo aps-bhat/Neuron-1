@@ -5,6 +5,7 @@ class Resume(object):
      self.collection_school=request.db['school']
      self.collection_college=request.db['graduate']
      self.collection_project=request.db['project']
+     self.collection_employment=request.db['employment']
 
   def resumeread(self,uname):
     res=self.collection.find_one({'username':uname})
@@ -96,7 +97,30 @@ class Resume(object):
         pro_links.append(project_detail['links'])
         i=i+1
     no_of_pro=i
+    employments=[]
+    name_company=[]
+    place_company=[]
+    from_company=[]
+    to_company=[]
+    pos_company=[]
+    no_of_emp=0  #employment_p_tag
+    try:
+        employments=res['employment']
+    except KeyError:
+        employments=[]
+    except TypeError:
+        employments=[]
+    i=0
+    for employment in employments:
+        employment_detail=self.collection_employment.find_one({'eid':employment})
+        name_company.append(employment_detail['name'])
+        place_company.append(employment_detail['place'])
+        from_company.append(employment_detail['from'])
+        to_company.append(employment_detail['to'])
+        pos_company.append(employment_detail['position'])
+        i=i+1
+    no_of_emp=i
     return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
-    'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,
-    'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links}
+    'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
+    'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp}

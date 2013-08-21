@@ -37,6 +37,7 @@ def resume_write(request):
         schools=[]
     no_of_p=request.params['p_tag']
     Address=request.params["address"]
+    #print no_of_p
     collection_school=request.db['school']
     for i in range(0,int(no_of_p)):
         flag=0
@@ -136,14 +137,49 @@ def resume_write(request):
         except IndexError:
             projects.append(project_count+1)
             flag=1
-        collection_project.update({'pid':colleges[i]},{"$set":{'title':pro_title[i],'description':pro_description[i],'members':pro_members[i],'publications':pro_publications[i],'from':pro_from[i],'to':pro_to[i],'links':pro_links[i]}},upsert=True)
+        collection_project.update({'pid':projects[i]},{"$set":{'title':pro_title[i],'description':pro_description[i],'members':pro_members[i],'publications':pro_publications[i],'from':pro_from[i],'to':pro_to[i],'links':pro_links[i]}},upsert=True)
         if(flag==1):
            collection_schoolid.update({'name':'pid'},{"$set":{'value':project_count+1}})
-    collection_resume.update({'username':uname},{"$set":{'project':projects}},upsert=True)  
+    collection_resume.update({'username':uname},{"$set":{'project':projects}},upsert=True)
+    employments=[]
+    name_company=[]
+    place_company=[]
+    from_company=[]
+    to_company=[]
+    pos_company=[]
+    no_of_emp=0  #employment_p_tag
+    try:
+        employments=person['employment']
+    except KeyError:
+        employments=[]
+    except TypeError:
+        employments=[]
+    no_of_emp=request.params['no_of_emp'] #project_p_tag
+    collection_employment=request.db['employment']
+    for i in range(0,int(no_of_emp)):
+        flag=0
+        ech=collection_schoolid.find_one({'name':'eid'})
+        employment_count=int(ech["value"])
+        if not employment_count:
+            employment_count=0
+        name_company.append(request.params['name_company_'+str(i)])
+        place_company.append(request.params['place_company_'+str(i)])
+        from_company.append(request.params['from_company_'+str(i)])
+        to_company.append(request.params['to_company_'+str(i)])
+        pos_company.append(request.params['pos_company_'+str(i)])
+        try: 
+            temp=employments[i]
+        except IndexError:
+            employments.append(employment_count+1)
+            flag=1
+        collection_employment.update({'eid':employments[i]},{"$set":{'name':name_company[i],'place':place_company[i],'from':from_company[i],'to':to_company[i],'position':pos_company[i]}},upsert=True)
+        if(flag==1):
+           collection_schoolid.update({'name':'eid'},{"$set":{'value':employment_count+1}})
+    collection_resume.update({'username':uname},{"$set":{'employment':employments}},upsert=True)  
     return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
-    'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,
-    'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links}
+    'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
+    'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp    }
     
 def resume_delete(request):
     setting=request.registry.settings
@@ -153,6 +189,7 @@ def resume_delete(request):
     collection_school=request.db['school']
     collection_college=request.db['graduate']
     collection_project=request.db['project']
+    collection_employment=request.db['employment']
     person=collection_resume.find_one({'username':uname})
     d=request.params["del"]
     d=d.split("_")
@@ -179,6 +216,12 @@ def resume_delete(request):
         del project[no]
         collection_resume.update({'username':uname},{"$set":{'project':project}})
         collection_project.remove({'pid':pc})
+    if(val=="ech"):
+        employment=person["employment"]
+        ec=employment[no]
+        del employment[no]
+        collection_resume.update({'username':uname},{"$set":{'employment':employment}})
+        collection_employment.remove({'eid':ec})
     resobj=Resume(request)
     res_dic=resobj.resumeread(uname)
     return res_dic
