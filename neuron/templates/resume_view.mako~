@@ -39,6 +39,14 @@ var j=emp_p+1;
 $('<p><br/\><h3 align="center"> EMPLOYMENT - '+j+'</h3><br/\>Name of Company: <input type="text" name="name_company_'+emp_p+'" id="name_company_'+emp_p+'"><br/\>Place: <input type="text" name="place_company_'+emp_p+'" id="place_company_'+emp_p+'"><br/\>From: <input type="text" name="from_company_'+emp_p+'" id="from_company_'+emp_p+'"><br/\>To: <input type="text" name="to_company_'+emp_p+'" id="to_company_'+emp_p+'"><br/\>Position: <input type="text" name="pos_company_'+emp_p+'" id="pos_company_'+emp_p+'"><br/\><input type="button"  id="ech_'+emp_p+'" value="Remove"><br/\></p>').appendTo(addDiv3);
 emp_p++;
 document.resume_form.no_of_emp.value=emp_p;return false;})
+var addDiv4 = $('#addskills')
+var skill_p=$('#addskills p').size()
+$('#addNewSkill').live('click',function() {
+var j=skill_p+1;
+$( '<p><br /\>Skill -'+j+':<input type="text" name="name_skill_'+skill_p+'" id="name_skill_'+skill_p+'"/\><br/\></p>').appendTo(addDiv4);
+skill_p++;
+document.resume_form.no_of_skill.value=skill_p; return false;})
+
    // this function displays the ID of the clicked button
         $(':button').click(function() {
   var buttonElementId = $(this).attr('id');
@@ -60,12 +68,14 @@ var i = $('#addschools p').size()/2;
 var j = $('#addcolleges p').size()/2;
 var k = $('#addprojects p').size()/2;
 var l = $('#addemployments p').size()/2;
+var m=$('#addskills p').size()/2;
 document.getElementById("uname").readOnly=true;
 document.getElementById("address").readOnly=true;
 document.resume_form.p_tag.value=i;
 document.resume_form.no_of_pc.value=j;
 document.resume_form.no_of_pro.value=k;
 document.resume_form.no_of_emp.value=l;
+document.resume_form.no_of_skill.value=m;
 return true;
 }
 function DisplayTextBox(){
@@ -93,6 +103,7 @@ Address: <input type="text" name="address" id="address" value="${address}">
 <a href='#' id="addNewCollege">AddNewCollege</a>
 <a href='#' id="addNewProject">AddNewProject</a>
 <a href='#' id="addNewEmployment">AddNewEmployment</a>
+<a href='#' id="addNewSkill">AddNewSkill</a>
 <div id="addschools">
 <h1 align="center"> SCHOOL FORM </h1>
 ${count_school()}
@@ -109,12 +120,17 @@ ${count_project()}
 <h1 align="center"> EMPLOYMENT FORM</h1>
 ${count_employment()}
 </div>
-<input type="text" name="p_tag" >
-<input type="text" name="no_of_pc">
-<input type="text" name="no_of_pro">
-<input type="text" name="no_of_emp" >
-</form>
+<div id="addskills">
+<h1 align="center"> SKILLS FORM</h1>
+${count_skills()}
 </div>
+<input type="text" name="p_tag" hidden="true">
+<input type="text" name="no_of_pc" hidden="true">
+<input type="text" name="no_of_pro" hidden="true">
+<input type="text" name="no_of_emp" hidden="true">
+<input type="text" name="no_of_skill">
+</form>
+
 <%def name="count_school()">
     % for i in range(0,int(no_of_p)):
         <p>
@@ -211,6 +227,15 @@ ${count_employment()}
         <input type="button"  id="cch_${i}" value="Remove"> 
         <br/>
         </p>
+    % endfor
+</%def>
+<%def name="count_skills()">
+    % for i in range(0,int(no_of_skill)):
+         <p>
+         <br />
+        Skill - ${i+1}: <input type="text" name="name_skill_${i}" id="name_skill_${i}" value="${name_skill[i]}"/> &nbsp &nbsp &nbsp 
+         <br/>
+         </p>
     % endfor
 </%def>
 <!-- To be hidden-->
