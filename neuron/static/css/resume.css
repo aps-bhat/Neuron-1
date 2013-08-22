@@ -2,4 +2,15 @@ div.resume
 {
 background-image:url('Resume1.png')
 }
-
+.sideheading
+{
+font-weight:600; 
+font-family:'Trebuchet MS', Helvetica, sans-serif; 
+font-size:15pt
+}
+.maintext-center
+{
+text-align:center;
+font-family:'Trebuchet MS', Helvetica, sans-serif; 
+font-size:12pt
+}

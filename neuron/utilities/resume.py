@@ -123,6 +123,7 @@ class Resume(object):
     skills=[]
     name_skill=[]
     no_of_skill=0
+    i=0
     try: 
         skills=res['skill']
     except KeyError:

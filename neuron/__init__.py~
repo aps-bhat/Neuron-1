@@ -83,10 +83,8 @@ def main(global_config, **settings):
     config.add_route('welcome','/index')
     config.add_view(session_check,route_name='welcome',renderer="neuron:templates/welcome.pt")
     
-    config.add_route('resume_ex','/experience_entered')
-    config.add_view(experience_write)
     config.add_route('resume_v','/resume_view')
-    config.add_view(resume_read,route_name='resume_v',renderer="neuron:templates/resume_view.mako")
+    config.add_view(resume_read,route_name='resume_v',renderer="neuron:templates/resume_display.mako")
     
     #config.add_route('resume_e','/resume_edit')
     #config.add_view(resume_read,route_name='resume_e',renderer="neuron:templates/resume_edit.pt")
