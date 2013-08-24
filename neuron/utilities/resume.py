@@ -6,7 +6,9 @@ class Resume(object):
      self.collection_college=request.db['graduate']
      self.collection_project=request.db['project']
      self.collection_employment=request.db['employment']
-     self.collection_skill=request.db['skill_set']
+     self.collection_skill_set=request.db['skill_set']
+     self.collection_skill=request.db['skill']
+
   def resumeread(self,uname):
     res=self.collection.find_one({'username':uname})
     #print res
@@ -123,6 +125,7 @@ class Resume(object):
     print no_of_emp
     skills=[]
     name_skill=[]
+    level_skill=[]
     no_of_skill=0
     i=0
     try: 
@@ -132,11 +135,15 @@ class Resume(object):
     except TypeError:
         skills=[]
     for skill in skills:
-        skill_detail=self.collection_skill.find_one({'skid':skill})
-        name_skill.append(skill_detail['name_of_skill'])
+        skill_detail=self.collection_skill.find_one({'skl_id':skill})
+        sk_id=int(skill_detail["sk_id"])
+        name_of_skill_dict=self.collection_skill_set.find_one({'skid':sk_id})
+        name_of_skill=name_of_skill_dict["name_of_skill"]
+        name_skill.append(name_of_skill)
+        level_skill.append(skill_detail["level_skill"])
         i=i+1
     no_of_skill=i
     return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
     'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
-    'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp,'no_of_skill':no_of_skill,'name_skill':name_skill}
+    'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp,'no_of_skill':no_of_skill,'name_skill':name_skill,"level_skill":level_skill}

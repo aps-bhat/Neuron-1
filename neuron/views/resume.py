@@ -198,7 +198,8 @@ def resume_write(request):
     for i in range (0,int(no_of_skill)):
        name_of_skills.append(request.params['name_skill_'+str(i)]) #obtaining the skills from the page to display them again
        level_skill.append(request.params['level_skill_'+str(i)])
-       flag=0
+       skill_inv=coll.find_one({'name':'skillid'}) # error in retriving this part.. value is 0.. check console
+       skl_id=int(skill_inv["value"])
        try:
            temp=skills[i] #the skill already exists 
            skill_excists=collection_skill.find_one({'name_of_skill':name_of_skills[i]}) #obtaining the corresponding sk_id
@@ -211,24 +212,17 @@ def resume_write(request):
            except KeyError:
              sklid=collection_schoolid.find_one({'name':'skid'}) #inserting that skill into the skill_set table
              sk_id=int(sklid["value"])+1
-             print sklid
-             print sk_id
              collection_skill.insert({'skid':sk_id,'name_of_skill':name_of_skills[i]})
+             collection_schoolid.update({'name':'skid'},{"$set":{'value':sk_id}})
              flag=1
            except TypeError:
              sklid=collection_schoolid.find_one({'name':'skid'}) #inserting that skill into the skill_set table
              sk_id=int(sklid["value"])+1
-             print sklid
-             print sk_id
              collection_skill.insert({'skid':sk_id,'name_of_skill':name_of_skills[i]})
-             flag=1
-           skill_inv=coll.find_one({'name':'skillid'}) # error in retriving this part.. value is 0.. check console
-           print skill_inv
-           skl_id=int(skill_inv["value"])+1
-           print skl_id    
-           skills.append(skl_id)
-       if(flag==1):
-          collection_schoolid.update({'name':'skid'},{"$set":{'value':sk_id}})
+             collection_schoolid.update({'name':'skid'},{"$set":{'value':sk_id}})
+             flag=1 
+           skl_id=skl_id+1  
+           skills.append(skl_id)  
        collection_indv_skill.update({'skl_id':skills[i]},{"$set":{'sk_id':sk_id,'level_skill':level_skill[i]}},upsert=True)
        collection_schoolid.update({'name':'skillid'},{"$set":{'value':skl_id}})
        collection_resume.update({'username':uname},{"$set":{'skill':skills}},upsert=True)  
