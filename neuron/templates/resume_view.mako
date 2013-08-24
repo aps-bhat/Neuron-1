@@ -43,7 +43,7 @@ var addDiv4 = $('#addskills')
 var skill_p=$('#addskills p').size()
 $('#addNewSkill').live('click',function() {
 var j=skill_p+1;
-$( '<p><br /\>Skill -'+j+':<input type="text" name="name_skill_'+skill_p+'" id="name_skill_'+skill_p+'"/\><br/\></p>').appendTo(addDiv4);
+$('<p><br /\> Skill - '+j+': <input type="text" name="name_skill_'+skill_p+'" id="name_skill_'+skill_p+'"/\> &nbsp &nbsp &nbsp Skill - level: <select name="level_skill_'+skill_p+'"><option value="novice">novice</option><option value="intermediate">intermediate</option><option value="expert">expert</option></select><br/\></p>').appendTo(addDiv4);
 skill_p++;
 document.resume_form.no_of_skill.value=skill_p; return false;})
 
@@ -124,8 +124,8 @@ ${count_employment()}
 <h1 align="center"> SKILLS FORM</h1>
 ${count_skills()}
 </div>
-<input type="text" name="p_tag" hidden="true">
-<input type="text" name="no_of_pc" hidden="true">
+<input type="text" name="p_tag" hidden="true" >
+<input type="text" name="no_of_pc" hidden="true" >
 <input type="text" name="no_of_pro" hidden="true">
 <input type="text" name="no_of_emp" hidden="true">
 <input type="text" name="no_of_skill">
@@ -234,6 +234,7 @@ ${count_skills()}
          <p>
          <br />
         Skill - ${i+1}: <input type="text" name="name_skill_${i}" id="name_skill_${i}" value="${name_skill[i]}"/> &nbsp &nbsp &nbsp 
+        Skill - level: <select name="level_skill_${i}"><option value="novice">novice</option><option value="intermediate">intermediate</option><option value="expert">expert</option></select>
          <br/>
          </p>
     % endfor

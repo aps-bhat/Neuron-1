@@ -4,13 +4,19 @@ background-image:url('Resume1.png')
 }
 .sideheading
 {
-font-weight:600; 
+font-weight:700; 
 font-family:'Trebuchet MS', Helvetica, sans-serif; 
 font-size:15pt
 }
+.sideheading-mini
+{
+font-weight:500;
+font-family:'Trebuchet MS', Helvetica, sans-serif; 
+font-size:13pt
+}
 .maintext-center
 {
-text-align:center
+text-align:center;
 font-family:'Trebuchet MS', Helvetica, sans-serif; 
 font-size:12pt
 }

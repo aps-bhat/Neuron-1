@@ -120,6 +120,7 @@ class Resume(object):
         pos_company.append(employment_detail['position'])
         i=i+1
     no_of_emp=i
+    print no_of_emp
     skills=[]
     name_skill=[]
     no_of_skill=0
