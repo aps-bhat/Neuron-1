@@ -28,7 +28,7 @@ Resume
   <br/>
 %endif
 <!-- displaying education details -->
-%if no_of_p!=0 and no_of_pc!=0: 
+%if no_of_p!=0 or no_of_pc!=0: 
   <span class="sideheading">Education</span>
   <hr>
   %if no_of_pc!=0:

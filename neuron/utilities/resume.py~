@@ -8,6 +8,9 @@ class Resume(object):
      self.collection_employment=request.db['employment']
      self.collection_skill_set=request.db['skill_set']
      self.collection_skill=request.db['skill']
+     self.collection_school_set=request.db['school_set']
+     self.collection_college_set=request.db['college_set']
+     self.collection_employment_set=request.db['employment_set']
 
   def resumeread(self,uname):
     res=self.collection.find_one({'username':uname})
@@ -35,10 +38,12 @@ class Resume(object):
     i=0
     for school in schools:
         school_detail=self.collection_school.find_one({'sid':school})
-        name.append(school_detail['name'])
+        schid=int(school_detail["schid"])
+        sch_detail=self.collection_school_set.find_one({'schid':schid})
+        name.append(sch_detail['name_of_school'])
         d_o_j.append(school_detail['date_of_joining'])
         d_o_l.append(school_detail['date_of_leaving'])
-        place.append(school_detail['place'])
+        place.append(sch_detail['place'])
         m_s.append(school_detail['marks_secured'])
         o_f.append(school_detail['out_of'])
         i=i+1
@@ -62,15 +67,18 @@ class Resume(object):
     i=0
     for college in colleges:
         college_detail=self.collection_college.find_one({'gid':college})
+        colid=int(college_detail["colid"])
+        colg_detail=self.collection_college_set.find_one({'colid':colid})
         degree.append(college_detail['degree'])
         course.append(college_detail['course'])
-        name_coll.append(college_detail['name'])
-        place_coll.append(college_detail['place'])
+        name_coll.append(colg_detail['name_of_college'])
+        place_coll.append(colg_detail['place'])
         d_o_j_coll.append(college_detail['date_of_joining'])
         d_o_l_coll.append(college_detail['date_of_leaving'])
         m_s_coll.append(college_detail['marks_secured'])
         o_f_coll.append(college_detail['out_of'])
         i=i+1
+    print i
     no_of_pc=i
     projects=[]
     pro_title=[]
@@ -115,8 +123,10 @@ class Resume(object):
     i=0
     for employment in employments:
         employment_detail=self.collection_employment.find_one({'eid':employment})
-        name_company.append(employment_detail['name'])
-        place_company.append(employment_detail['place'])
+        cmpid=int(employment_detail["cmpid"])
+        emp_detail=self.collection_employment_set.find_one({'cmpid':cmpid})
+        name_company.append(emp_detail['name_of_company'])
+        place_company.append(emp_detail['place'])
         from_company.append(employment_detail['from'])
         to_company.append(employment_detail['to'])
         pos_company.append(employment_detail['position'])
@@ -138,7 +148,7 @@ class Resume(object):
         skill_detail=self.collection_skill.find_one({'skl_id':skill})
         sk_id=int(skill_detail["sk_id"])
         name_of_skill_dict=self.collection_skill_set.find_one({'skid':sk_id})
-        name_of_Skill=name_of_skill_dict["name_of_skill"]
+        name_of_skill=name_of_skill_dict["name_of_skill"]
         name_skill.append(name_of_skill)
         level_skill.append(skill_detail["level_skill"])
         i=i+1

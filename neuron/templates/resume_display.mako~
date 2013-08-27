@@ -160,7 +160,8 @@ Resume
     %for i in range(0,int(no_of_skill)):
        <tr>
        <td width="15%"> ${i+1} </td>
-       <td width="40%"> ${name_skill[i]} </td>
+       <td width="20%"> ${name_skill[i]} </td>
+       <td width="20%">${level_skill[i]}</td>
        <td width="45%"> endorsed by </td>
        </tr>     
     %endfor

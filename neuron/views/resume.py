@@ -53,7 +53,7 @@ def resume_write(request):
         o_f.append(request.params['outof_school_'+str(i)])
         try:
            temp=schools[i] #the skill already exists 
-           school_exists=collection_school.find_one({'name':name[i],'place':place[i]}) #obtaining the corresponding sk_id
+           school_exists=collection_school.find_one({'name_of_school':name[i]}) #obtaining the corresponding sk_id
            schid=school_exists["schid"]
            count_students=int(school_exists["count_students"])
            #print i,'Inside try ',sk_id
@@ -78,7 +78,7 @@ def resume_write(request):
            schools.append(school_count)  
            count_students=count_students+1
            collection_school.update({'schid':schid},{"$set":{'count_students':count_students}})
-        collection_schoolid.update({'schid':schid},{"$set":{'value':school_count}})
+        collection_schoolid.update({'name':'sid'},{"$set":{'value':school_count}})
         collection_indv_school.update({'sid':schools[i]},{"$set":{'schid':schid,'date_of_joining':d_o_j[i],'date_of_leaving':d_o_l[i],
         'marks_secured':m_s[i],'out_of':o_f[i]}},upsert=True)
     collection_resume.update({'username':uname},{"$set":{'address':Address,'school':schools}},upsert=True)
@@ -91,7 +91,9 @@ def resume_write(request):
     d_o_l_coll=[]
     m_s_coll=[]
     o_f_coll=[]
-    no_of_pc=0  #college_p_tag
+    no_of_pc=0 
+    colid=0 #college_p_tag
+    count_students=0
     try:
         colleges=person['college']
     except KeyError:
@@ -115,33 +117,35 @@ def resume_write(request):
         o_f_coll.append(request.params['outof_college_'+str(i)]) 
         try:
            temp=colleges[i] #the skill already exists 
-           college_exists=collection_college.find_one({'name_of_college':name_college[i],'place':city_college[i]}) #obtaining the corresponding sk_id
-           col_id=college_exists["colid"]
+           college_exists=collection_college.find_one({'name_of_college':name_coll[i],'place':place_coll[i]}) #obtaining the corresponding sk_id
+           colid=college_exists["colid"]
+           
            count_students=int(college_exists["count_students"])
            #print i,'Inside try ',sk_id
         except IndexError: #the skill does not exist
            try: #getting the value of sk_id
-             college_exists=collection_college.find_one({'name_of_college':name_college[i]}) #finding if the skill is already present
+             college_exists=collection_college.find_one({'name_of_college':name_coll[i]}) #finding if the skill is already present
              col_id=college_exists["colid"] #getting the sk_id for storing it
              count_students=int(college_exists["count_students"])
            except KeyError:
              col_id=collection_schoolid.find_one({'name':'colid'}) #inserting that skill into the skill_set table
              colid=int(col_id["value"])+1
-             collection_college.insert({'colid':colid,'name_of_college':name_college[i],'place':city_college[i]})
+             collection_college.insert({'colid':colid,'name_of_college':name_coll[i],'place':place_coll[i]})
              collection_schoolid.update({'name':'colid'},{"$set":{'value':colid}})
-             count_employee=0
+             count_students=0
            except TypeError:
              col_id=collection_schoolid.find_one({'name':'colid'}) #inserting that skill into the skill_set table
              colid=int(col_id["value"])+1
-             collection_college.insert({'colid':colid,'name_of_college':name_college[i],'place':city_college[i]})
+             collection_college.insert({'colid':colid,'name_of_college':name_coll[i],'place':place_coll[i]})
              collection_schoolid.update({'name':'colid'},{"$set":{'value':colid}})
-             count_employee=0
+             count_students=0
            college_count=college_count+1  
            colleges.append(college_count)  
            count_students=count_students+1
            collection_college.update({'colid':colid},{"$set":{'count_students':count_students}})
-        collection_schoolid.update({'colid':colid},{"$set":{'value':college_count}})
-        collection_indv_college.update({'gid':colleges[i]},{"$set":{'degree':degree[i],'course':course[i],'date_of_joining':d_o_j_col[i],'date_of_leaving':d_o_l_coll[i],'marks_secured':m_s_coll[i],'out_of':o_f_coll[i]}},upsert=True)
+        collection_schoolid.update({'name':'cid'},{"$set":{'value':college_count}})
+        #print colid
+        collection_indv_college.update({'gid':colleges[i]},{"$set":{'colid':colid,'degree':degree[i],'course':course[i],'date_of_joining':d_o_j_coll[i],'date_of_leaving':d_o_l_coll[i],'marks_secured':m_s_coll[i],'out_of':o_f_coll[i]}},upsert=True)
     collection_resume.update({'username':uname},{"$set":{'address':Address,'college':colleges}},upsert=True)  
     projects=[]
     pro_title=[]
