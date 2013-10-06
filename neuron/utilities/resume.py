@@ -9,7 +9,7 @@ class Resume(object):
      self.collection_skill_set=request.db['skill_set']
      self.collection_skill=request.db['skill']
      self.collection_school_set=request.db['school_set']
-     self.collection_college_set=request.db['college_set']
+     self.collection_college_set=request.db['graduate_set']
      self.collection_employment_set=request.db['employment_set']
 
   def resumeread(self,uname):

@@ -116,7 +116,7 @@ def main(global_config, **settings):
     config.add_route('process-picture','/process-pic')
     config.add_view(process_profile_picture,route_name="process-picture",renderer="neuron:templates/auth.pt")
 
-    config.add_view('login.views.login_complete_view',context='velruse.AuthenticationComplete',renderer='neuron:templates/result.mako')
+    config.add_view('neuron.views.login.login_complete_view',context='velruse.AuthenticationComplete',renderer='neuron:templates/result.mako')
     
 
   # MongoDB

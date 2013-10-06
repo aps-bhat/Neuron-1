@@ -101,7 +101,7 @@ def resume_write(request):
     except TypeError:
         colleges=[]
     no_of_pc=request.params['no_of_pc']
-    collection_college=request.db['college_set']
+    collection_college=request.db['graduate_set']
     collection_indv_college=request.db['graduate']
     for i in range(0,int(no_of_pc)):
         flag=0

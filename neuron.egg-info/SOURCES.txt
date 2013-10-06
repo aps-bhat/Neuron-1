@@ -1,13 +1,8 @@
 README.txt
 setup.cfg
 neuron/__init__.py
-neuron/authen.py
-neuron/prof_pic.py
-neuron/register.py
-neuron/registerprof.py
 neuron/resources.py
 neuron/tests.py
-neuron/views.py
 neuron.egg-info/PKG-INFO
 neuron.egg-info/SOURCES.txt
 neuron.egg-info/dependency_links.txt
@@ -15,3 +10,12 @@ neuron.egg-info/entry_points.txt
 neuron.egg-info/not-zip-safe
 neuron.egg-info/requires.txt
 neuron.egg-info/top_level.txt
+neuron/utilities/__init__.py
+neuron/utilities/authen.py
+neuron/utilities/prof_pic.py
+neuron/utilities/register.py
+neuron/utilities/registerprof.py
+neuron/utilities/resume.py
+neuron/views/__init__.py
+neuron/views/login.py
+neuron/views/resume.py
