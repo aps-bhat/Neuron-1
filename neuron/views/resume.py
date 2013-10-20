@@ -20,9 +20,13 @@ def resume_write(request):
     setting=request.registry.settings
     session=request.session
     uname=session['name']
+    collection_user=request.db['users']
+    user=collection_user.find_one({'username':uname})
+    fname=user['first_name']#retrieving first & last name from users table
+    lname=user['last_name']
     collection_resume=request.db['resume']
-    person=collection_resume.find_one({'username':uname})
-    collection_schoolid=request.db['resume_misc']
+    person=collection_resume.find_one({'username':uname}) #getting user detail 
+    collection_schoolid=request.db['resume_misc'] 
     schools=[]
     name=[]
     d_o_j=[]
@@ -31,19 +35,18 @@ def resume_write(request):
     m_s=[]
     o_f=[]
     try:
-        schools=person['school']
+        schools=person['school'] 
     except TypeError:
         schools=[]
     except KeyError:
         schools=[]
-    no_of_p=request.params['p_tag']
+    no_of_p=request.params['p_tag'] 
     Address=request.params["address"]
-    #print no_of_p
     collection_school=request.db['school_set']
     collection_indv_school=request.db['school']
     for i in range(0,int(no_of_p)):
         flag=0
-        sch=collection_schoolid.find_one({'name':'sid'})
+        sch=collection_schoolid.find_one({'name':'sid'}) #getting school id from the resume_misc table
         school_count=int(sch["value"])
         name.append(request.params['name_school_'+str(i)])
         d_o_j.append(request.params['doj_school_'+str(i)])
@@ -52,24 +55,23 @@ def resume_write(request):
         m_s.append(request.params['ms_school_'+str(i)])
         o_f.append(request.params['outof_school_'+str(i)])
         try:
-           temp=schools[i] #the skill already exists 
-           school_exists=collection_school.find_one({'name_of_school':name[i]}) #obtaining the corresponding sk_id
+           temp=schools[i] #the school already exists 
+           school_exists=collection_school.find_one({'name_of_school':name[i]}) #obtaining the corresponding school_id
            schid=school_exists["schid"]
            count_students=int(school_exists["count_students"])
-           #print i,'Inside try ',sk_id
-        except IndexError: #the skill does not exist
-           try: #getting the value of sk_id
-             school_exists=collection_school.find_one({'name_of_school':name[i]}) #finding if the skill is already present
-             schid=school_exists["schid"] #getting the sk_id for storing it
+        except IndexError: #the school does not exist
+           try: #getting the value of school_id
+             school_exists=collection_school.find_one({'name_of_school':name[i]}) #finding if the school is already present
+             schid=school_exists["schid"] #getting the sch_id for storing it
              count_students=int(school_exists["count_students"])
            except KeyError:
-             sch_id=collection_schoolid.find_one({'name':'schid'}) #inserting that skill into the skill_set table
+             sch_id=collection_schoolid.find_one({'name':'schid'}) #inserting that school into the school_set table
              schid=int(sch_id["value"])+1
              collection_school.insert({'schid':schid,'name_of_school':name[i],'place':place[i]})
              collection_schoolid.update({'name':'schid'},{"$set":{'value':schid}})
              count_students=0
            except TypeError:
-             sch_id=collection_schoolid.find_one({'name':'schid'}) #inserting that skill into the skill_set table
+             sch_id=collection_schoolid.find_one({'name':'schid'}) #inserting that school into the school_set table
              schid=int(sch_id["value"])+1
              collection_school.insert({'schid':schid,'name_of_school':name[i],'place':place[i]})
              collection_schoolid.update({'name':'schid'},{"$set":{'value':schid}})
@@ -105,7 +107,7 @@ def resume_write(request):
     collection_indv_college=request.db['graduate']
     for i in range(0,int(no_of_pc)):
         flag=0
-        cch=collection_schoolid.find_one({'name':'cid'})
+        cch=collection_schoolid.find_one({'name':'cid'}) #getting college id from resume_misc table
         college_count=int(cch["value"])
         degree.append(request.params['degree_college_'+str(i)])
         course.append(request.params['course_college_'+str(i)])
@@ -116,25 +118,24 @@ def resume_write(request):
         m_s_coll.append(request.params['ms_college_'+str(i)])
         o_f_coll.append(request.params['outof_college_'+str(i)]) 
         try:
-           temp=colleges[i] #the skill already exists 
-           college_exists=collection_college.find_one({'name_of_college':name_coll[i],'place':place_coll[i]}) #obtaining the corresponding sk_id
+           temp=colleges[i] #the college already exists 
+           college_exists=collection_college.find_one({'name_of_college':name_coll[i],'place':place_coll[i]}) #obtaining the corresponding college_id
            colid=college_exists["colid"]
            
            count_students=int(college_exists["count_students"])
-           #print i,'Inside try ',sk_id
-        except IndexError: #the skill does not exist
-           try: #getting the value of sk_id
-             college_exists=collection_college.find_one({'name_of_college':name_coll[i]}) #finding if the skill is already present
-             col_id=college_exists["colid"] #getting the sk_id for storing it
+        except IndexError: #the college does not exist
+           try: #getting the value of college_id
+             college_exists=collection_college.find_one({'name_of_college':name_coll[i]}) #finding if the college is already present
+             col_id=college_exists["colid"] #getting the college_id for storing it
              count_students=int(college_exists["count_students"])
            except KeyError:
-             col_id=collection_schoolid.find_one({'name':'colid'}) #inserting that skill into the skill_set table
+             col_id=collection_schoolid.find_one({'name':'colid'}) #inserting that college into the graduate_set table
              colid=int(col_id["value"])+1
              collection_college.insert({'colid':colid,'name_of_college':name_coll[i],'place':place_coll[i]})
              collection_schoolid.update({'name':'colid'},{"$set":{'value':colid}})
              count_students=0
            except TypeError:
-             col_id=collection_schoolid.find_one({'name':'colid'}) #inserting that skill into the skill_set table
+             col_id=collection_schoolid.find_one({'name':'colid'}) #inserting that college into the graduate_set table
              colid=int(col_id["value"])+1
              collection_college.insert({'colid':colid,'name_of_college':name_coll[i],'place':place_coll[i]})
              collection_schoolid.update({'name':'colid'},{"$set":{'value':colid}})
@@ -194,7 +195,7 @@ def resume_write(request):
         employments=[]
     except TypeError:
         employments=[]
-    no_of_emp=request.params['no_of_emp'] #project_p_tag
+    no_of_emp=request.params['no_of_emp'] #employment_p_tag
     collection_indv_employment=request.db['employment']
     collection_employment=request.db['employment_set']
     for i in range(0,int(no_of_emp)):
@@ -206,24 +207,23 @@ def resume_write(request):
         ech=collection_schoolid.find_one({'name':'eid'})
         employment_count=int(ech["value"])
         try:
-           temp=employments[i] #the skill already exists 
-           employment_exists=collection_employment.find_one({'name_of_company':name_company[i],'place':place_company[i]}) #obtaining the corresponding sk_id
+           temp=employments[i] #the employment already exists 
+           employment_exists=collection_employment.find_one({'name_of_company':name_company[i],'place':place_company[i]}) #obtaining the corresponding emp_id
            cmp_id=employment_exists["cmpid"]
            count_employee=int(employment_exists["count_employment"])
-           #print i,'Inside try ',sk_id
-        except IndexError: #the skill does not exist
-           try: #getting the value of sk_id
-             employment_exists=collection_employment.find_one({'name_of_company':name_company[i]}) #finding if the skill is already present
-             cmp_id=employment_exists["cmpid"] #getting the sk_id for storing it
+        except IndexError: #the employee does not exist
+           try: #getting the value of emp_id
+             employment_exists=collection_employment.find_one({'name_of_company':name_company[i]}) #finding if the employee is already present
+             cmp_id=employment_exists["cmpid"] #getting the emp_id for storing it
              count_employee=int(employment_exists["count_employment"])
            except KeyError:
-             cmpid=collection_schoolid.find_one({'name':'cmpid'}) #inserting that skill into the skill_set table
+             cmpid=collection_schoolid.find_one({'name':'cmpid'}) #inserting that employee into the employment_set table
              cmp_id=int(cmpid["value"])+1
              collection_employment.insert({'cmpid':cmp_id,'name_of_company':name_company[i],'place':place_company[i]})
              collection_schoolid.update({'name':'cmpid'},{"$set":{'value':cmp_id}})
              count_employee=0
            except TypeError:
-             cmpid=collection_schoolid.find_one({'name':'cmpid'}) #inserting that skill into the skill_set table
+             cmpid=collection_schoolid.find_one({'name':'cmpid'}) #inserting that employee into the employment_set table
              cmp_id=int(cmpid["value"])+1
              collection_employment.insert({'cmpid':cmp_id,'name_of_company':name_company[i],'place':place_company[i]})
              collection_schoolid.update({'name':'cmpid'},{"$set":{'value':cmp_id}})
@@ -287,8 +287,9 @@ def resume_write(request):
            collection_skill.update({'name':'skid'},{"$set":{'count_skill':count_skill}})
        collection_indv_skill.update({'skl_id':skills[i]},{"$set":{'sk_id':sk_id,'level_skill':level_skill[i]}},upsert=True)
        collection_schoolid.update({'name':'skillid'},{"$set":{'value':skl_id}})
-    collection_resume.update({'username':uname},{"$set":{'skill':skills}},upsert=True)  
-    return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
+    collection_resume.update({'username':uname},{"$set":{'skill':skills}},upsert=True)
+    full_name=fname+" "+lname; #full_name of the user
+    return {'full_name':full_name,'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
     'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
     'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp,'no_of_skill':no_of_skill,'name_skill':name_of_skills,'level_skill':level_skill}

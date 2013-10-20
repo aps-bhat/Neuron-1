@@ -11,8 +11,13 @@ class Resume(object):
      self.collection_school_set=request.db['school_set']
      self.collection_college_set=request.db['graduate_set']
      self.collection_employment_set=request.db['employment_set']
+     self.collection_users=request.db['users']
 
   def resumeread(self,uname):
+    user=self.collection_users.find_one({'username':uname})
+    fname=user['first_name']
+    lname=user['last_name']
+    full_name=fname+" "+lname
     res=self.collection.find_one({'username':uname})
     #print res
     #check_address=Resume.get('address',None)
@@ -131,7 +136,7 @@ class Resume(object):
         pos_company.append(employment_detail['position'])
         i=i+1
     no_of_emp=i
-    print no_of_emp
+    #print no_of_emp
     skills=[]
     name_skill=[]
     level_skill=[]
@@ -152,7 +157,7 @@ class Resume(object):
         level_skill.append(skill_detail["level_skill"])
         i=i+1
     no_of_skill=i
-    return {'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
+    return {'full_name':full_name,'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
     'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
     'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp,'no_of_skill':no_of_skill,'name_skill':name_skill,"level_skill":level_skill}

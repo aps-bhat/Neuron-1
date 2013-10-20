@@ -10,7 +10,7 @@ Resume
 <body>
 <div class="one">
 <div style="text-align:center;  font-family:'Brush Script MT','Comic Sans MS', cursive; font-size:40pt"> Resume</div>
-<div style="text-align:center; font-weight:800; text-transform:uppercase; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:25pt">${username}</div>
+<div style="text-align:center; font-weight:800; text-transform:uppercase; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:25pt">${full_name}</div>
 <div style="text-align:center; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:15pt">${address}</div>
 <div style="text-align:center; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:15pt">phone number, email-id</div>
 <a  align="right" href="/resume_edit">Edit my resume</a>
