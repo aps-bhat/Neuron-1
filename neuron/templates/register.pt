@@ -61,7 +61,7 @@ return true;
 <form method="post" name="register" action="/register_profile_details">
 <br/>
 <br/>
-First Name (*): <input type="text" name="fname" onblur="return valfname()"/>&nbsp &nbsp &nbsp <input type="text" name="fname_err" style="border: 0px solid #000000;color:red;font-size:12pt;"> <!-- invisible field for displaying error in first name -->
+First Name (*): <input type="text" name="fname" id="fname"/>&nbsp &nbsp &nbsp <input type="text" name="fname_err" style="border: 0px solid #000000;color:red;font-size:12pt;"> <!-- invisible field for displaying error in first name -->
 <br/>
 <br/>
 Last Name (*): <input type="text" name="lname" onblur="return vallname()"/> &nbsp &nbsp &nbsp <input type="text" name="lname_err" style="border: 0px solid #000000;color:red;font-size:12pt;"> <!-- invisible field for displaying error in last name -->
@@ -141,6 +141,23 @@ Designation : <input type="text" name="designation" />
 <input type="submit" name="submit" value="Save My details!!!">
 </form>
 </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+	alert("here");
+		//var fname=('form').children('input').eq(0);
+		$("#fname").change(function(){
+		var fname=$(this).val();
+		alert(fname);
+		if(fname==null || fname=="")
+		{
+			alert("First name has to be entered");
+		}
+		else if(fname.length<3)
+		{
+			alert("The length has to be greater than 3");
+		}
+		});
+	</script>
 </body>
 </html>
 

@@ -30,6 +30,7 @@ def session_check(request):
 
 def register_profiledetails(request):
     session=request.session
+    username=session['name']
     fname=request.params["fname"]
     lname=request.params["lname"]
     date=request.params["date"]
@@ -38,6 +39,8 @@ def register_profiledetails(request):
     city=request.params["ccity"]
     designation=request.params["designation"]
     #print(session['name'],fname,lname,date,month,year,city,designation)
+    UpdateUser=RegisterUser(request)
+    UpdateUser.EnterUserDetails(username,fname,lname,date,month,year,city,designation)
     return {'username':'appu', 'password':'appu', 'state': 'successful'}
 
 def signup(request):
@@ -47,10 +50,10 @@ def register_user(request):
     username=request.params["uname"]
     password=request.params["pword"]
     email=request.params["email"]
-    fname=request.params["fname"]
-    lname=request.params["lname"]
+    #fname=request.params["fname"]
+    #lname=request.params["lname"]
     WriteUser= RegisterUser(request)
-    WriteUser.EnterUser(username,password,email,fname,lname)
+    WriteUser.EnterUser(username,password,email)
     session=request.session
     session['name']=username
     session.save()
