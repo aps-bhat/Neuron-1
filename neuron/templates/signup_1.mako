@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<!-- This document shows the form for sign up -->
+<head>
+<title>
+login 
+</title>
+ <script>
+function validate()
+{
+var uname=document.forms["sign-up"]["uname"].value;
+if(uname==null || uname=="") // checks if username field is empty
+{
+alert("username is null");
+return false;
+}
+var pword=document.forms["sign-up"]["pword"].value;
+var rpword=document.forms["sign-up"]["repword"].value;
+if(pword=="" || pword==null) //checks if password field is empty
+{
+alert("password is null");
+return false;
+}
+if(rpword=="" || rpword==null) // checks if the retry password field is empty
+{
+alert("the retry password field is null");
+return false;
+}
+if(pword != rpword) // if the password mismatches then an alert is shown
+{
+alert("password mismatch!! Type again");
+return false;
+}
+//alert("checking e-mail");
+var email=document.forms["sign-up"]["email"].value;
+/*This means that the input data must contain an @ sign and at least one dot (.). Also, the @ must not be the first character of the email ?address, and the last dot must be present after the @ sign, and minimum 2 characters before the end:*/
+var atpos=email.indexOf("@");
+var dotpos=email.lastIndexOf(".");
+if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length)
+  {
+  alert("Not a valid e-mail address");
+  return false;
+  }
+alert("everything perfect");
+return true;
+}
+</script>
+ <link rel="stylesheet" href="${request.static_url('neuron:static/css/login.css')}" type="text/css" media="screen" charset="utf-8" />
+</head>
+<body>
+<h1 align="center">
+Welcome to ${page} page
+</h1>
+<div class="one">
+<form method="post" name="sign-up" action="/register" onsubmit="return validate()">
+<br />
+<br />
+Enter your username: <input type="text" name="uname" value="${username}">
+<br />
+<br />
+Enter your password: <input type="password" name="pword">
+<br />
+<br />
+Reenter your password: <input type="password" name="repword">
+<br />
+<br />
+Enter your e-mail address: <input type="text" name="email" value="${email}">
+<br />
+<br />
+<!-- Date of birth to be added --> 
+<input type="submit" name="submit" value="Join US!!!">
+<br />
+<br />
+</form>
+</div>
+</body>
+</html>

@@ -24,9 +24,6 @@ def authenticate(request):
         session.invalidate()
         return {'username':username, 'password':password, 'state': 'try again','session':'empty'}
 
-def session_check(request):
-    session=request.session
-    return {'session':session['name']}
 
 def register_profiledetails(request):
     session=request.session
