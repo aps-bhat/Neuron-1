@@ -143,18 +143,18 @@ Designation : <input type="text" name="designation" />
 </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>
-	alert("here");
 		//var fname=('form').children('input').eq(0);
-		$("#fname").change(function(){
+		$("form input:text#fname").focusout(function(){
 		var fname=$(this).val();
-		alert(fname);
 		if(fname==null || fname=="")
 		{
 			alert("First name has to be entered");
+			$(this).after('The first name field is NULL!!!');
 		}
 		else if(fname.length<3)
 		{
 			alert("The length has to be greater than 3");
+			$(this).after(' Give a first name with length > 3 pls..!!');
 		}
 		});
 	</script>
