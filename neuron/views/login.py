@@ -7,6 +7,7 @@ from velruse import login_url
 import json
 import logging
 import os
+from pyramid.httpexceptions import *
 def index(request):
     return {'page':'login', 'state':'Please SIGN IN !!!'}
 
@@ -50,7 +51,9 @@ def register_user(request):
     #fname=request.params["fname"]
     #lname=request.params["lname"]
     WriteUser= RegisterUser(request)
-    WriteUser.EnterUser(username,password,email)
+    n=WriteUser.EnterUser(request,username,password,email)
+    if(n==1):
+		return HTTPFound(location=request.route_url('sign-up'))
     session=request.session
     session['name']=username
     session.save()
