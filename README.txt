@@ -2,13 +2,15 @@ NEURON
 backend os - linux
 Requirements and procedures
 1) Set environmental variable for PROJECT_HOME=../neuron
-2) Python virutalenv <name>
-3) activate virtualenv - source <name>/bin/activate
-4) install mongodb - http://docs.mongodb.org/manual/installation/
-5) pip install pyramid
-6) pip install pyramid_mongodb
-7) pip install pyramid_beaker
-8) pip install pymongo
-9) pip install velruse
-10) cd ../neuron -> pip install -e .
-11) Now run the project -> pserve developement.ini --reload
+2) Install pip in your system - sudo easy_install pip
+3) Install virtualenv in your system (pip install virtualenv)
+4) Create virtual python environment (virtualenv <temp_name>)
+5) activate virtualenv - source <name>/bin/activate
+6) install mongodb - http://docs.mongodb.org/manual/installation/
+7) pip install pyramid
+8) pip install pyramid_mongodb
+9) pip install pyramid_beaker
+10) pip install pymongo
+11) pip install velruse
+12) cd ../neuron -> pip install -e .
+13) Now run the project -> pserve developement.ini --reload
