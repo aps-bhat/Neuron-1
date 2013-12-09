@@ -8,6 +8,7 @@ Requirements and procedures
 4) Create virtual python environment (virtualenv <temp_name>)
 5) activate virtualenv - source <name>/bin/activate
 6) install mongodb - http://docs.mongodb.org/manual/installation/
+// make sure pip is installed
 7) pip install pyramid
 8) pip install pyramid_mongodb
 9) pip install pyramid_beaker
