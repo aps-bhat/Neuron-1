@@ -1,5 +1,5 @@
 NEURON
-backend os - linux
+backend os - linux/mac OS
 Requirements and procedures
 1) Set environmental variable for PROJECT_HOME=../neuron
 2) Install pip in your system - sudo easy_install pip
