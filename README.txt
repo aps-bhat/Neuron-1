@@ -13,4 +13,5 @@ Requirements and procedures
 10) pip install pymongo
 11) pip install velruse
 12) cd ../neuron -> pip install -e .
-13) Now run the project -> pserve developement.ini --reload
+13) start mongodb server (sudo mongod)
+14) Now run the project -> pserve developement.ini --reload
