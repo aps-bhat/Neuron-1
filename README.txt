@@ -1,5 +1,5 @@
 NEURON
-checking conflict
+checking conflict for branches
 backend os - linux/mac OS
 Requirements and procedures
 1) Set environmental variable for PROJECT_HOME=../neuron
