@@ -87,6 +87,15 @@ def main(global_config, **settings):
     config.add_route('resume_en','/resume_entered')
     config.add_view(resume_write,route_name='resume_en',renderer="neuron:templates/resume_view.mako")
     
+    config.add_route('error','/error')
+    config.add_view(error,route_name='error',renderer="neuron:templates/error.mako")
+
+    config.add_route('social_first','/register')
+    config.add_view(social,route_name='social_first',renderer="neuron:templates/register.pt")
+
+    config.add_route('social','/home')
+    config.add_view(social,route_name='social',renderer="neuron:templates/auth.pt")
+
     config.add_route('resume_ed','/resume_edit')
     config.add_view(resume_read,route_name='resume_ed',renderer="neuron:templates/resume_view.mako")
     

@@ -68,10 +68,10 @@ def login_view(request):
 def process_profile_picture(request):
     input_file=request.POST["prof_pic"].file
     project_home=os.environ['PROJECT_HOME']
-    tmp=project_home+"/login/static/images/"
+    tmp=project_home+"/neuron/static/images/"
     session=request.session
     username=session['name']
-    tmp = tmp + username
+    tmp = tmp + username+"/profile_pictures"
     if not os.path.exists(tmp):
         os.makedirs(tmp)
     tmp= tmp + "/img0.jpeg"
@@ -82,6 +82,14 @@ def process_profile_picture(request):
     ppobj.EnterFirstProfPic(username)
     return { 'username':username, 'password':'password', 'state':'saved','session':session['name']}
 
+def error(request):
+	return {}
+	
+def social(request):
+	session=request.session
+	username=session['name']
+	return { 'username':username, 'password':'password', 'state':'saved','session':session['name']}
+	
 def login_complete_view(request):
     context = request.context
     result = {
@@ -99,17 +107,24 @@ def login_complete_view(request):
         if not flag_to_insert:
             user={'username':username, 'email_id':result['profile']['verifiedEmail']}
             collection.insert(user)
+            session=request.session
+            session['name']=username
+            return HTTPFound(location=request.route_url('social_first'))
     if(domain=="twitter.com"):
-        username=result['profile']['displayName']
+        username=account[0]['username']
+        #print json.dumps(result, indent=4)
         setting = request.registry.settings
         collection = request.db['users']
         flag_to_insert=collection.find_one({'username':username})
         if not flag_to_insert:
             user={'username':username}
             collection.insert(user)
-        
+            session=request.session
+            session['name']=username
+            #print username
+            return HTTPFound(location=request.route_url('social_first'))
+    session=request.session
+    session['name']=username
    #print(result['profile']['displayName'])
-    return {
-        'result': json.dumps(result, indent=4)
-    }
+    return HTTPFound(location=request.route_url('social'))
 
