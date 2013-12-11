@@ -92,39 +92,55 @@ def social(request):
 	
 def login_complete_view(request):
     context = request.context
+	#retrieving the social profile details of the user
     result = {
         'profile': context.profile,
         'credentials': context.credentials,
     }
-    #print(result['profile']['accounts'])
+	#retrieving the domain of the social network
     account=result['profile']['accounts']
     domain=account[0]['domain']
     if(domain=="facebook.com"):
-        username=result['profile']['preferredUsername']
+        username=result['profile']['preferredUsername'] #retrieve username from the social profile
         setting = request.registry.settings
         collection = request.db['users']
-        flag_to_insert=collection.find_one({'username':username})
+        flag_to_insert=collection.find_one({'username':username}) 
+		#check if username is already available in the table or not if not insert it
         if not flag_to_insert:
-            user={'username':username, 'email_id':result['profile']['verifiedEmail']}
+            user={'username':username, 'email_id':result['profile']['verifiedEmail'],'social_domain':'facebook'}
             collection.insert(user)
             session=request.session
             session['name']=username
             return HTTPFound(location=request.route_url('social_first'))
+		#If user name is already available in the table, check domain name matches to facebook, if not redirect to sign up page else login in by setting session
+        else:
+            social=flag_to_insert['social_domain']
+            if(social=="facebook"):
+                session=request.session
+                session['name']=username
+                return HTTPFound(location=request.route_url('social'))
+            else:
+                return HTTPFound(location=request.route_url('sign-up'))
     if(domain=="twitter.com"):
-        username=account[0]['username']
-        #print json.dumps(result, indent=4)
+        username=account[0]['username'] #retrieve username from the social profile
         setting = request.registry.settings
         collection = request.db['users']
         flag_to_insert=collection.find_one({'username':username})
+		#check if username is already available in the table or not if not insert it
         if not flag_to_insert:
-            user={'username':username}
+            user={'username':username,'social_domain':'twitter'}
             collection.insert(user)
             session=request.session
             session['name']=username
-            #print username
             return HTTPFound(location=request.route_url('social_first'))
-    session=request.session
-    session['name']=username
-   #print(result['profile']['displayName'])
-    return HTTPFound(location=request.route_url('social'))
+		#If user name is already available in the table, check domain name matches to twitter, if not redirect to sign up page else login in by setting session
+        else:
+            social=flag_to_insert['social_domain']
+            if(social=="twitter"):
+                session=request.session
+                session['name']=username
+                return HTTPFound(location=request.route_url('social'))
+            else:
+                return HTTPFound(location=request.route_url('sign-up'))
+    
 

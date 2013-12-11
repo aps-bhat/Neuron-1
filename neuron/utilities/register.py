@@ -6,10 +6,10 @@ class RegisterUser(object):
   def EnterUser(self, request, username, password, email):
      flag=self.collection.find_one({'username':username})
      if not flag:	
-     	user={'username':username, 'password':password, 'email_id':email}
+     	user={'username':username, 'password':password, 'email_id':email,'social_domain':'direct'}
      	self.collection.insert(user)
      else: 
-		print "hi"
+		#print "hi"
 		return 1
      return 0	
 		#redirect('0.0.0.0:5000/')
