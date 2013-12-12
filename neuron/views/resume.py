@@ -80,6 +80,7 @@ def resume_write(request):
            schools.append(school_count)  
            count_students=count_students+1
            collection_school.update({'schid':schid},{"$set":{'count_students':count_students}})
+        collection_school.update({'schid':schid},{"$set":{'place':place[i]}})
         collection_schoolid.update({'name':'sid'},{"$set":{'value':school_count}})
         collection_indv_school.update({'sid':schools[i]},{"$set":{'schid':schid,'date_of_joining':d_o_j[i],'date_of_leaving':d_o_l[i],
         'marks_secured':m_s[i],'out_of':o_f[i]}},upsert=True)
@@ -146,6 +147,7 @@ def resume_write(request):
            collection_college.update({'colid':colid},{"$set":{'count_students':count_students}})
         collection_schoolid.update({'name':'cid'},{"$set":{'value':college_count}})
         #print colid
+        collection_college.update({'colid':colid},{"$set":{'place':place_coll[i]}})
         collection_indv_college.update({'gid':colleges[i]},{"$set":{'colid':colid,'degree':degree[i],'course':course[i],'date_of_joining':d_o_j_coll[i],'date_of_leaving':d_o_l_coll[i],'marks_secured':m_s_coll[i],'out_of':o_f_coll[i]}},upsert=True)
     collection_resume.update({'username':uname},{"$set":{'address':Address,'college':colleges}},upsert=True)  
     projects=[]
@@ -209,6 +211,8 @@ def resume_write(request):
         try:
            temp=employments[i] #the employment already exists 
            employment_exists=collection_employment.find_one({'name_of_company':name_company[i],'place':place_company[i]}) #obtaining the corresponding emp_id
+           #if not employment_exists:
+            #     raise IndexError	             
            cmp_id=employment_exists["cmpid"]
            count_employee=int(employment_exists["count_employment"])
         except IndexError: #the employee does not exist
@@ -227,13 +231,14 @@ def resume_write(request):
              cmp_id=int(cmpid["value"])+1
              collection_employment.insert({'cmpid':cmp_id,'name_of_company':name_company[i],'place':place_company[i]})
              collection_schoolid.update({'name':'cmpid'},{"$set":{'value':cmp_id}})
-             count_employee=0
+             count_employee=0  
            employment_count=employment_count+1  
            employments.append(employment_count)  
            count_employee=count_employee+1
            collection_employment.update({'cmpid':cmp_id},{"$set":{'count_employment':count_employee}})
         collection_schoolid.update({'name':'eid'},{"$set":{'value':employment_count}})
-        collection_indv_employment.update({'eid':employments[i]},{"$set":{'cmpid':cmp_id,'from':from_company[i],'to':to_company[i],'position':pos_company[i]}},upsert=True)
+        collection_employment.update({'cmpid':cmp_id},{"$set":{'place':place_company[i]}})        
+        collection_indv_employment.update({'eid':employments[i]},{"$set":{'place':place_company[i],'cmpid':cmp_id,'from':from_company[i],'to':to_company[i],'position':pos_company[i]}},upsert=True)
     collection_resume.update({'username':uname},{"$set":{'employment':employments}},upsert=True)  
     #skills 
     name_of_skills=[] # Tha variables used to store value from the previous page

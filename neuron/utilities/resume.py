@@ -49,6 +49,7 @@ class Resume(object):
         d_o_j.append(school_detail['date_of_joining'])
         d_o_l.append(school_detail['date_of_leaving'])
         place.append(sch_detail['place'])
+        #print place
         m_s.append(school_detail['marks_secured'])
         o_f.append(school_detail['out_of'])
         i=i+1
