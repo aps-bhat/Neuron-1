@@ -90,7 +90,7 @@ def main(global_config, **settings):
     config.add_route('error','/error')
     config.add_view(error,route_name='error',renderer="neuron:templates/error.mako")
 
-    config.add_route('social_first','/register')
+    config.add_route('social_first','/profile_details')
     config.add_view(social,route_name='social_first',renderer="neuron:templates/register.pt")
 
     config.add_route('social','/home')

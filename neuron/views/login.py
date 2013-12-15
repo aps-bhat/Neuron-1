@@ -79,7 +79,8 @@ def process_profile_picture(request):
     output.write(input_file.read())
     output.close()
     ppobj=ProfilePicture(request)
-    ppobj.EnterFirstProfPic(username)
+    description=request.params["description"]
+    ppobj.EnterFirstProfPic(request,username,description)
     return { 'username':username, 'password':'password', 'state':'saved','session':session['name']}
 
 def error(request):

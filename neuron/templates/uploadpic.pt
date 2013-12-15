@@ -29,7 +29,7 @@ if (window.FileReader) {
           reader.onload = (function(theFile) {
             return function(e) {
               document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="800" height="500"/>'].join('');
-			  document.getElementById('desc').innerHTML=['<textarea id="description" rows="5" columns="50" onclick="ClearContents()">Enter your description here</textarea>'].join('');
+			  document.getElementById('desc').innerHTML=['<textarea name="description" id="description" rows="5" columns="50" onclick="ClearContents()">Enter your description here</textarea>'].join('');
             };
           })(f);
     
