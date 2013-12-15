@@ -104,6 +104,7 @@ Address: <input type="text" name="address" id="address" value="${address}">
 <a href='#' id="addNewProject">AddNewProject</a>
 <a href='#' id="addNewEmployment">AddNewEmployment</a>
 <a href='#' id="addNewSkill">AddNewSkill</a>
+<a href="/resume_view">Resume view mode </a>
 <div id="addschools">
 <h1 align="center"> SCHOOL FORM </h1>
 ${count_school()}
