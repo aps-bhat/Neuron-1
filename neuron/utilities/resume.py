@@ -22,6 +22,12 @@ class Resume(object):
     #print res
     #check_address=Resume.get('address',None)
     try:
+	    email=res['email_id']
+    except TypeError:
+        email="enter your email_id"		
+    except KeyError:
+        email="enter your email_id"	
+    try:
         Address=res['address']
     except TypeError:
         Address='Enter your address'
@@ -158,7 +164,7 @@ class Resume(object):
         level_skill.append(skill_detail["level_skill"])
         i=i+1
     no_of_skill=i
-    return {'full_name':full_name,'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
+    return {'email':email,'full_name':full_name,'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
     'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
     'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp,'no_of_skill':no_of_skill,'name_skill':name_skill,"level_skill":level_skill}

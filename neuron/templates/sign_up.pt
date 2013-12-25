@@ -5,7 +5,38 @@
 <title>
 login 
 </title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
  <script>
+$(function(){
+		var datatosend;
+function check_user()
+{
+
+	$.getJSON('/checkuser.json',datatosend,function(data)
+	{
+		$.each(data,function(key,val)
+		{
+			if(val=="true")
+			{
+				document.getElementById("check_user").value="Available";
+			}
+			else
+			{
+				document.getElementById("check_user").value="Not available";
+			}
+		});
+	});
+}	
+
+$("#check_user").click(function(){
+   var name=document.getElementById("uname").value;
+	datatosend={
+		"check": name
+	};
+		check_user();	
+});
+});
 function validate()
 {
 var uname=document.forms["sign-up"]["uname"].value;
@@ -55,7 +86,7 @@ Welcome to ${page} page
 <form method="post" name="sign-up" action="/register" onsubmit="return validate()">
 <br />
 <br />
-Enter your username: <input type="text" name="uname">
+Enter your username: <input type="text" id="uname" name="uname"> &nbsp&nbsp <input type="button" name="check_user" id="check_user" value="check username">
 <br />
 <br />
 Enter your password: <input type="password" name="pword">

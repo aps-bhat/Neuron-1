@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+<title> U are here </title>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<style>
+img { width: 25px; height: 25px; padding-right: 10px;}
+.ui-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  float: left;
+  display: none;
+  min-width: 160px;
+  _width: 160px;
+  padding: 4px 0;
+  margin: 2px 0 0 0;
+  list-style: none;
+  background-color: #ffffff;
+  border-color: #ccc;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+ 
+  .ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+ 
+    &.ui-state-hover, &.ui-state-active {
+      color: #ffffff;
+      text-decoration: none;
+      background-color: #0088cc;
+      border-radius: 0px;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+      background-image: none;
+    }
+  }
+}
+.ui-helper-hidden-accessible { display:none; }
+</style>
+<script>
+$(document).ready(function () {
+    $("#auto").autocomplete({
+        source: function (request, response) {
+			 var wildcard = { "username":request.term };
+		      var postData = {
+		        "query": { "text_phrase_prefix": wildcard },
+		        "fields": ["username","_id","piclocation"],
+		        "size" : "10"
+		      };
+            $.ajax({
+                url: "http://slave:9200/searchusers/_search",
+               	type: "POST",
+		        data: JSON.stringify(postData),
+                dataType: "json",
+                success: function(data) {
+                    response($.map(data.hits.hits, function(item) {
+                        return {
+                         	 label: item.fields.username,
+							  id: item.fields._id,
+							  pic:item.fields.piclocation
+                        };
+                    }));
+                }
+            });
+        },
+minlength:1,
+    }).data("uiAutocomplete")._renderItem = function (ul, item) {
+        return $("<li />")
+            .data("item.autocomplete", item)
+            .append("<a href='/friend?q="+item.label+"'><img src='" + item.pic + "' />" + item.label + "</a>")
+            .appendTo(ul);
+    };    
+});
+</script>
+</head>
+<body>
+<div class="ui-widget">
+<input id="auto" name="auto"/>
+</div>
+<h1 align="center"> Welcome ${username} </h1>
+<h1 align="center"> Your password is ${password} </h1>
+<h1 align="center"> Your state is ${state} </h1>
+<h1 align="center"> Your session is ${session} </h1>
+<a href='/index'>click here</a>
+<br/>
+<a href='/resume_view'> Resume</a>
+</body>
+</html>

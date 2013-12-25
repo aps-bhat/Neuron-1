@@ -7,6 +7,7 @@ from velruse import login_url
 import json
 import logging
 import os
+import urlparse
 from pyramid.httpexceptions import *
 def index(request):
     return {'page':'login', 'state':'Please SIGN IN !!!'}
@@ -24,6 +25,18 @@ def authenticate(request):
     else:
         session.invalidate()
         return {'username':username, 'password':password, 'state': 'try again','session':'empty'}
+
+@view_config(renderer="json",name="checkuser.json")
+def check_user(request):
+    url=request.url
+    parsed=urlparse.urlparse(url)
+    username=urlparse.parse_qs(parsed.query)['check']
+    collection_users=request.db['users']
+    users=collection_users.find_one({'username':username[0]})
+    if not users:
+        return {'state':'true'}
+    else:
+        return {'state':'false'}	
 
 
 def register_profiledetails(request):
@@ -57,6 +70,13 @@ def register_user(request):
     session=request.session
     session['name']=username
     session.save()
+    collection_search_users=request.db["search_users"]
+    collection_search_users.insert({'username':username})
+    collection_friend=request.db["friends"]
+    pursuers=[]
+    pursuing=[]
+    mutual=[]
+    collection_friend.insert({'username':username,'pursuers':pursuers,'pursuing':pursuing,'no_pursuing':'0','no_pursuers':'0','no_mutual':'0','mutual':mutual})
     return {'username':username, 'password':password, 'state': 'successful'}
 
 def login_view(request):
@@ -64,6 +84,15 @@ def login_view(request):
         'login_url': login_url,
         'providers': request.registry.settings['login_providers'],
     }
+
+
+def friend(request):
+    url=request.url
+    parsed=urlparse.urlparse(url)
+    friend_name=urlparse.parse_qs(parsed.query)['q']
+    collection_friend=request.db['users']
+    friend=collection_friend.find_one({'username':friend_name[0]});
+    return {"f_name":friend['first_name'],"l_name":friend['last_name'],"this_username":friend_name[0]}
 
 def process_profile_picture(request):
     input_file=request.POST["prof_pic"].file
@@ -74,13 +103,21 @@ def process_profile_picture(request):
     tmp = tmp + username+"/profile_pictures"
     if not os.path.exists(tmp):
         os.makedirs(tmp)
-    tmp= tmp + "/img0.jpeg"
+    tmp= tmp + "/img0.jpg"
+    picloc_to_search="/static/images/"+username+"/profile_pictures/img0.jpg"
     output=open(tmp, 'w')
     output.write(input_file.read())
     output.close()
     ppobj=ProfilePicture(request)
     description=request.params["description"]
     ppobj.EnterFirstProfPic(request,username,description)
+    collection_search_users=request.db["search_users"]
+    try:
+       collection_search_users.update({'username':username},{"$set":{'piclocation':picloc_to_search}})
+    except KeyError:
+	   return HTTPFound(location=request.route_url('sign-up'))
+    except IndexError:
+       return HTTPFound(location=request.route_url('sign-up'))
     return { 'username':username, 'password':'password', 'state':'saved','session':session['name']}
 
 def error(request):

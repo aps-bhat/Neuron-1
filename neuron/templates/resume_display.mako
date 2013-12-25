@@ -12,7 +12,7 @@ Resume
 <div style="text-align:center;  font-family:'Brush Script MT','Comic Sans MS', cursive; font-size:40pt"> Resume</div>
 <div style="text-align:center; font-weight:800; text-transform:uppercase; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:25pt">${full_name}</div>
 <div style="text-align:center; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:15pt">${address}</div>
-<div style="text-align:center; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:15pt">phone number, email-id</div>
+<div style="text-align:center; font-family:TimesNewRoman,'Times New Roman',Times,Baskerville,Georgia,Serif; font-size:15pt">phone number, ${email}</div>
 <a  align="right" href="/resume_edit">Edit my resume</a>
 <br/>
 <!-- displaying employment details -->
@@ -162,7 +162,6 @@ Resume
        <td width="15%"> ${i+1} </td>
        <td width="20%"> ${name_skill[i]} </td>
        <td width="20%">${level_skill[i]}</td>
-       <td width="45%"> endorsed by </td>
        </tr>     
     %endfor
 </%def>

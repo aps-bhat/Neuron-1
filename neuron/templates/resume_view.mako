@@ -43,7 +43,7 @@ var addDiv4 = $('#addskills')
 var skill_p=$('#addskills p').size()
 $('#addNewSkill').live('click',function() {
 var j=skill_p+1;
-$('<p><br /\> Skill - '+j+': <input type="text" name="name_skill_'+skill_p+'" id="name_skill_'+skill_p+'"/\> &nbsp &nbsp &nbsp Skill - level: <select name="level_skill_'+skill_p+'"><option value="novice">novice</option><option value="intermediate">intermediate</option><option value="expert">expert</option></select><br/\></p>').appendTo(addDiv4);
+$('<p><br /\> Skill - '+j+': <input type="text" name="name_skill_'+skill_p+'" id="name_skill_'+skill_p+'"/\> &nbsp &nbsp &nbsp Skill - level: <select name="level_skill_'+skill_p+'"><option value="novice">novice</option><option value="intermediate">intermediate</option><option value="expert">expert</option></select><br/\><input type="button" id="sk'+skill_p+'" value="Remove"><br/\></p>').appendTo(addDiv4);
 skill_p++;
 document.resume_form.no_of_skill.value=skill_p; return false;})
 
@@ -70,16 +70,12 @@ var k = $('#addprojects p').size()/2;
 var l = $('#addemployments p').size()/2;
 var m=$('#addskills p').size();
 document.getElementById("display_name").readOnly=true;
-//document.getElementById("address").readOnly=true;
 document.resume_form.p_tag.value=i;
 document.resume_form.no_of_pc.value=j;
 document.resume_form.no_of_pro.value=k;
 document.resume_form.no_of_emp.value=l;
 document.resume_form.no_of_skill.value=m;
 return true;
-}
-function DisplayTextBox(){
- document.getElementById("address").readOnly=false;
 }
 
 </script> 
@@ -93,11 +89,10 @@ function DisplayTextBox(){
 <h1 style="text-align:center;font-family: 'Script MT Bold','Trebuchet MS', Helvetica, sans-serif; font-size:35pt"> Resume</h1>
 <br/>
 Display name: <input type="text" name="display_name" id="display_name" value="${full_name}"> &nbsp &nbsp &nbsp
-Address: <input type="text" name="address" id="address" value="${address}">
+Address: <input type="text" name="address" id="address" value="${address}"> &nbsp &nbsp &nbsp
+email:<input type="text" name="email" id="email" value="${email}">
 <br />
 <br />
-<!--<input type="text" name="edit_address" id="edit_address" style='display:none'>
-<input type="button" onclick="DisplayTextBox()" value="edit">-->
 <input type="submit" value="Save me!!!" >
 <a href="#" id="addNewSchool">AddNewSchool</a>
 <a href='#' id="addNewCollege">AddNewCollege</a>
@@ -236,6 +231,8 @@ ${count_skills()}
          <br />
         Skill - ${i+1}: <input type="text" name="name_skill_${i}" id="name_skill_${i}" value="${name_skill[i]}"/> &nbsp &nbsp &nbsp 
         Skill - level: <select name="level_skill_${i}"><option value="novice">novice</option><option value="intermediate">intermediate</option><option value="expert">expert</option></select>
+         <br/>
+         <input type="button" id="sk_${i}" value="Remove">
          <br/>
          </p>
     % endfor

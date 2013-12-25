@@ -42,6 +42,7 @@ def resume_write(request):
         schools=[]
     no_of_p=request.params['p_tag'] 
     Address=request.params["address"]
+    email=request.params["email"]
     collection_school=request.db['school_set']
     collection_indv_school=request.db['school']
     for i in range(0,int(no_of_p)):
@@ -84,7 +85,7 @@ def resume_write(request):
         collection_schoolid.update({'name':'sid'},{"$set":{'value':school_count}})
         collection_indv_school.update({'sid':schools[i]},{"$set":{'schid':schid,'date_of_joining':d_o_j[i],'date_of_leaving':d_o_l[i],
         'marks_secured':m_s[i],'out_of':o_f[i]}},upsert=True)
-    collection_resume.update({'username':uname},{"$set":{'address':Address,'school':schools}},upsert=True)
+    collection_resume.update({'username':uname},{"$set":{'email_id':email,'address':Address,'school':schools}},upsert=True)
     colleges=[]
     degree=[]
     course=[]
@@ -168,6 +169,7 @@ def resume_write(request):
     no_of_pro=request.params['no_of_pro'] #project_p_tag
     collection_project=request.db['project']
     for i in range(0,int(no_of_pro)):
+        #print no_of_pro
         flag=0
         pch=collection_schoolid.find_one({'name':'pid'})
         project_count=int(pch["value"])
@@ -180,6 +182,11 @@ def resume_write(request):
         pro_from.append(request.params['project_from_'+str(i)])
         pro_to.append(request.params['project_to_'+str(i)])
         pro_links.append(request.params['project_link_'+str(i)])
+        try: 
+	        temp=projects[i]
+        except IndexError:
+            projects.append(project_count+1)
+            flag=1
         collection_project.update({'pid':projects[i]},{"$set":{'title':pro_title[i],'description':pro_description[i],'members':pro_members[i],'publications':pro_publications[i],'from':pro_from[i],'to':pro_to[i],'links':pro_links[i]}},upsert=True)
         if(flag==1):
            collection_schoolid.update({'name':'pid'},{"$set":{'value':project_count+1}})
@@ -263,7 +270,7 @@ def resume_write(request):
        level_skill.append(request.params['level_skill_'+str(i)])
        skill_inv=coll.find_one({'name':'skillid'}) # error in retriving this part.. value is 0.. check console
        skl_id=int(skill_inv["value"])
-       try:
+       try: #This is for testng if the skill is already enetered into resume record of the user
            temp=skills[i] #the skill already exists 
            skill_excists=collection_skill.find_one({'name_of_skill':name_of_skills[i]}) #obtaining the corresponding sk_id
            sk_id=skill_excists["skid"]
@@ -277,24 +284,24 @@ def resume_write(request):
            except KeyError:
              sklid=collection_schoolid.find_one({'name':'skid'}) #inserting that skill into the skill_set table
              sk_id=int(sklid["value"])+1
-             collection_skill.insert({'skid':sk_id,'name_of_skill':name_of_skills[i]})
+             collection_skill.insert({'skid':sk_id,'name_of_skill':name_of_skills[i],'count_skill':'0'})
              collection_schoolid.update({'name':'skid'},{"$set":{'value':sk_id}})
              count_skill=0
            except TypeError:
              sklid=collection_schoolid.find_one({'name':'skid'}) #inserting that skill into the skill_set table
              sk_id=int(sklid["value"])+1
-             collection_skill.insert({'skid':sk_id,'name_of_skill':name_of_skills[i]})
+             collection_skill.insert({'skid':sk_id,'name_of_skill':name_of_skills[i],'count_skill':'0'})
              collection_schoolid.update({'name':'skid'},{"$set":{'value':sk_id}})
              count_skill=0
            skl_id=skl_id+1  
            skills.append(skl_id)  
            count_skill=count_skill+1
-           collection_skill.update({'name':'skid'},{"$set":{'count_skill':count_skill}})
+           collection_skill.update({'skid':sk_id},{"$set":{'count_skill':count_skill}})
        collection_indv_skill.update({'skl_id':skills[i]},{"$set":{'sk_id':sk_id,'level_skill':level_skill[i]}},upsert=True)
        collection_schoolid.update({'name':'skillid'},{"$set":{'value':skl_id}})
     collection_resume.update({'username':uname},{"$set":{'skill':skills}},upsert=True)
     full_name=fname+" "+lname; #full_name of the user
-    return {'full_name':full_name,'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
+    return {'email':email,'full_name':full_name,'address':Address,'username':uname,'no_of_p':no_of_p,'name':name,'d_o_j':d_o_j,'d_o_l':d_o_l,'place':place,'m_s':m_s,'o_f':o_f,
     'no_of_pc':no_of_pc,'degree':degree,'course':course,'name_coll':name_coll,'place_coll':place_coll,'d_o_j_coll':d_o_j_coll,'d_o_l_coll':d_o_l_coll,
     'm_s_coll':m_s_coll,'o_f_coll':o_f_coll,'no_of_pro':no_of_pro,'project_title':pro_title,'project_desc':pro_description,'project_mem':pro_members,      'project_pub':pro_publications,'project_from':pro_from,'project_to':pro_to,'project_link':pro_links,'name_company':name_company,'place_company':place_company,
     'from_company':from_company,'to_company':to_company,'pos_company':pos_company,'no_of_emp':no_of_emp,'no_of_skill':no_of_skill,'name_skill':name_of_skills,'level_skill':level_skill}
@@ -308,6 +315,7 @@ def resume_delete(request):
     collection_college=request.db['graduate']
     collection_project=request.db['project']
     collection_employment=request.db['employment']
+    collection_skill=request.db['skill']
     person=collection_resume.find_one({'username':uname})
     d=request.params["del"]
     d=d.split("_")
@@ -321,13 +329,27 @@ def resume_delete(request):
          del school[no]
          #print school
          collection_resume.update({'username':uname},{"$set":{'school':school}})
+         schools=collection_school.find_one({'sid':sc})
+         schid=schools["schid"]
          collection_school.remove({'sid':sc})
+         collection_subtract=request.db['school_set']
+         school_set=collection_subtract.find_one({'schid':schid})
+         count=school_set["count_students"]
+         count=count-1
+         collection_subtract.update({'schid':schid},{"$set":{'count_students':count}})
     if(val=="cch"):
         college=person["college"]
         cc=college[no]
         del college[no]
         collection_resume.update({'username':uname},{"$set":{'college':college}})
+        colls=collection_college.find_one({'gid':cc})
+        colid=colls["colid"]
         collection_college.remove({'gid':cc})
+        collection_subtract=request.db['graduate_set']
+        graduate_set=collection_subtract.find_one({'colid':colid})
+        count=graduate_set["count_students"]
+        count=count-1
+        collection_subtract.update({'colid':colid},{"$set":{'count_students':count}})
     if(val=="pch"):
         project=person["project"]
         pc=project[no]
@@ -339,7 +361,27 @@ def resume_delete(request):
         ec=employment[no]
         del employment[no]
         collection_resume.update({'username':uname},{"$set":{'employment':employment}})
+        emps=collection_employment.find_one({'eid':ec})
+        cmpid=emps["cmpid"]
         collection_employment.remove({'eid':ec})
+        collection_subtract=request.db['employment_set']
+        employment_set=collection_subtract.find_one({'cmpid':cmpid})
+        count=employment_set["count_employment"]
+        count=count-1
+        collection_subtract.update({'cmpid':cmpid},{"$set":{'count_employment':count}})
+    if(val=="sk"):
+        skill=person["skill"]
+        skl=skill[no]
+        del skill[no]
+        collection_resume.update({'username':uname},{"$set":{'skill':skill}})
+        skills=collection_skill.find_one({'skl_id':skl})
+        sk=skills["sk_id"]
+        collection_skill.remove({'skl_id':skl})
+        collection_subtract=request.db['skill_set']
+        skill_set=collection_subtract.find_one({'skid':sk})
+        count=skill_set["count_skill"]
+        count=count-1
+        collection_subtract.update({'skid':sk},{"$set":{'count_skill':count}})
     resobj=Resume(request)
     res_dic=resobj.resumeread(uname)
     return res_dic
