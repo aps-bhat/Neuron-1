@@ -99,4 +99,51 @@ def removepursuing(request):
 	pursuers.remove(username)
 	collection_friend.update({'username':friend},{"$set":{'pursuers':pursuers,'no_pursuers':no_of_pursuers}})
 	return {'state':'success'}
-	
+
+@view_config(renderer="json",name="viewpursuing.json")
+def viewpursuing(request):
+	session=request.session
+	username=session['name']
+	collection_pursuing=request.db['friends']
+	collection_users=request.db['search_users']
+	friends=collection_pursuing.find_one({'username':username})
+	pursuing=friends['pursuing']
+	to_return={}
+	for person in pursuing:
+		user_details=collection_users.find_one({'username':person})
+		uname=user_details['username']
+		picloc=user_details['piclocation']
+		to_return[uname]=picloc
+	return to_return
+
+@view_config(renderer="json",name="viewmutual.json")
+def viewmutual(request):
+	session=request.session
+	username=session['name']
+	collection_pursuing=request.db['friends']
+	collection_users=request.db['search_users']
+	friends=collection_pursuing.find_one({'username':username})
+	pursuing=friends['mutual']
+	to_return={}
+	for person in pursuing:
+		user_details=collection_users.find_one({'username':person})
+		uname=user_details['username']
+		picloc=user_details['piclocation']
+		to_return[uname]=picloc
+	return to_return
+
+@view_config(renderer="json",name="viewpursuers.json")
+def viewpursuers(request):
+	session=request.session
+	username=session['name']
+	collection_pursuing=request.db['friends']
+	collection_users=request.db['search_users']
+	friends=collection_pursuing.find_one({'username':username})
+	pursuing=friends['pursuers']
+	to_return={}
+	for person in pursuing:
+		user_details=collection_users.find_one({'username':person})
+		uname=user_details['username']
+		picloc=user_details['piclocation']
+		to_return[uname]=picloc
+	return to_return

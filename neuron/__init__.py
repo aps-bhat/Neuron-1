@@ -12,6 +12,7 @@ from neuron.resources import Root
 from neuron.views.login import *
 from neuron.views.resume import *
 from neuron.views.friend import *
+from neuron.views.profile import *
 from velruse import login_url
 def main(global_config, **settings):
     """ This function returns a WSGI application.
@@ -122,6 +123,9 @@ def main(global_config, **settings):
    
     config.add_route('process-picture','/process-pic')
     config.add_view(process_profile_picture,route_name="process-picture",renderer="neuron:templates/home.pt")
+    
+    config.add_route('self_profile','/self_profile')
+    config.add_route('view_friends','/view_friends')
 
     config.add_view('neuron.views.login.login_complete_view',context='velruse.AuthenticationComplete',renderer='neuron:templates/result.mako')
     

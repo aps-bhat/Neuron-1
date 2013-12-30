@@ -68,7 +68,7 @@ $(document).ready(function () {
 		        "size" : "10"
 		      };
             $.ajax({
-                url: "http://slave:9200/searchusers/_search",
+                url: "http://192.168.0.12:9200/searchusers/_search",
                	type: "POST",
 		        data: JSON.stringify(postData),
                 dataType: "json",
@@ -101,7 +101,7 @@ minlength:1,
 <h1 align="center"> Your password is ${password} </h1>
 <h1 align="center"> Your state is ${state} </h1>
 <h1 align="center"> Your session is ${session} </h1>
-<a href='/index'>click here</a>
+<a href='/self_profile'>Profile</a>
 <br/>
 <a href='/resume_view'> Resume</a>
 </body>
